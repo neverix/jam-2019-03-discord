@@ -1,0 +1,31 @@
+{
+    "name": "jam-2019-03-discord",
+    "version": "1.0.0",
+    "description": "Discord Jam game",
+    "main": "./src/index.ts",
+    "scripts": {
+        "start": "webpack-dev-server --open --mode development",
+        "build": "webpack --mode production"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/neverix/jam-2019-03-discord.git"
+    },
+    "author": "neverix",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/neverix/jam-2019-03-discord/issues"
+    },
+    "homepage": "https://github.com/neverix/jam-2019-03-discord#readme",
+    "devDependencies": {
+        "file-loader": "^3.0.1",
+        "html-loader": "^0.5.5",
+        "html-webpack-plugin": "^3.2.0",
+        "source-map-loader": "^0.2.4",
+        "ts-loader": "^5.3.3",
+        "typescript": "^3.3.3333",
+        "webpack": "^4.29.5",
+        "webpack-cli": "^3.2.3",
+        "webpack-dev-server": "^3.2.0"
+    }
+}
