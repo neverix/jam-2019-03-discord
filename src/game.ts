@@ -3,12 +3,8 @@ import * as mainloop from "mainloop.js"
 
 // start the game
 export function start(rootElement: HTMLElement = document.body) {
-    // wanted size
-    const widthWanted = 500
-    const heightWanted = 400
-
     // load canvas
-    const canvas = loadCanvas(widthWanted, heightWanted, rootElement = rootElement)
+    const canvas = loadCanvas(rootElement)
     const ctx = canvas.getContext("2d")
 
     // set up game state update and drawing
@@ -16,26 +12,24 @@ export function start(rootElement: HTMLElement = document.body) {
         // state update
     }).setDraw(() => {
         // drawing
-
-        // set scale
+        // move a bit
         ctx.save()
-        ctx.scale(canvas.width / widthWanted, canvas.height / heightWanted)
+        ctx.translate(canvas.width / 2, canvas.height / 2)
 
         // background
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.fillStyle = "#ffffff"
         ctx.fillRect(0, 0, canvas.width, canvas.height)
 
         // gradient
-        var grd = ctx.createLinearGradient(0, 0, 500, 0);
-        grd.addColorStop(0, "red");
-        grd.addColorStop(1, "white");
+        var grd = ctx.createLinearGradient(0, 0, canvas.width / 2, 0)
+        grd.addColorStop(0, "red")
+        grd.addColorStop(1, "white")
 
         // Fill with gradient
         ctx.fillStyle = grd;
-        ctx.fillRect(0, 0, 500, 400);
+        ctx.fillRect(0, 0, canvas.width, canvas.height)
 
-        // restore scale
+        // restore position
         ctx.restore()
     }).start()
 }

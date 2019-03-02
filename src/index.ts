@@ -4,9 +4,7 @@ import { start } from "./game"
 sceneTransition("menu")
 addOnSceneTransition("game", () => {
     start(getScene("game"))
-    setTimeout(() => {
-        sceneTransition("menu")
-    }, 2000)
+    setTimeout(() => sceneTransition("menu"), 10000)
 })
 
 // @ts-ignore black magic

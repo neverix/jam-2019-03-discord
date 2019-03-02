@@ -11,10 +11,7 @@ function loadAudio(path: string): HTMLAudioElement {
 }
 
 // load canvas
-function loadCanvas(
-    widthWanted: number,
-    heightWanted: number,
-    rootElement: HTMLElement = document.body): HTMLCanvasElement {
+function loadCanvas(rootElement: HTMLElement): HTMLCanvasElement {
     // create canvas if it doesn't exist
     if (document.getElementsByTagName("canvas").length == 0) {
         const canvas = document.createElement("canvas")
@@ -23,67 +20,26 @@ function loadCanvas(
     }
     // get the canvas and set it up
     const canvas = document.getElementById("canvas") as HTMLCanvasElement
-    canvas.style.position = "absolute"
     canvas.style.display = "block"
     // position and scale the canvas
-    positionAndScaleCanvas(canvas, widthWanted, heightWanted)
+    scaleCanvas(canvas)
     // intercept resize events
-    window.onresize = (e) => {
-        // resize the canvas on resize
-        positionAndScaleCanvas(canvas, widthWanted, heightWanted)
+    window.onresize = (_e) => {
+        // rescale the canvas on resize
+        scaleCanvas(canvas)
     }
     return canvas
 }
 
-// like getCanvasScaleAndPosition, but imperative and uses actual window size
-function positionAndScaleCanvas(canvas: HTMLCanvasElement, wantedWidth: number, wantedHeight: number) {
-    // get position and scale
-    let { w: width, h: height, x: leftOffset, y: topOffset } = getCanvasScaleAndPosition(
-        wantedWidth,
-        wantedHeight,
-        window.innerWidth,
-        window.innerHeight
-    )
-    // apply the position and scale
-    canvas.width = width
-    canvas.height = height
-    canvas.style.left = `${leftOffset}px`
-    canvas.style.top = `${topOffset}px`
-}
-
-// get scale and position of canvas
-function getCanvasScaleAndPosition(
-    wantedWidth: number,
-    wantedHeight: number,
-    windowWidth: number,
-    windowHeight: number): {
-        w: number,
-        h: number,
-        x: number,
-        y: number
-    } {
-    // calculate actual size
-    let width = windowWidth
-    let height = wantedHeight * width / wantedWidth
-    if (height > windowHeight) {
-        height = windowHeight
-        width = wantedWidth * height / wantedHeight
-    }
-    // calculate offset
-    const leftOffset = (windowWidth - width) / 2
-    const topOffset = (windowHeight - height) / 2
-    // format the output
-    return {
-        w: width,
-        h: height,
-        x: leftOffset,
-        y: topOffset
-    }
+// (re)scale canvas
+function scaleCanvas(canvas: HTMLCanvasElement) {
+    // apply the scale
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
 }
 
 // hide canvas
-function hideCanvas() {
-    let canvas = document.getElementById("canvas")
+function hideCanvas(canvas: HTMLCanvasElement) {
     if (canvas) canvas.style.display = "none"
 }
 
