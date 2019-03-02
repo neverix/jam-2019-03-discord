@@ -11,7 +11,8 @@
             "dom"
         ],
         "noImplicitAny": true,
-        "alwaysStrict": true
+        "alwaysStrict": true,
+        "moduleResolution": "Node"
     },
     "include": [
         "src/**/*.ts"
