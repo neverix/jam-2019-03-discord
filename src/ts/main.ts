@@ -1,8 +1,14 @@
 import { sceneTransition, addOnSceneTransition, getScene } from "./scenes"
 import { start } from "./game"
 import { typeText, hideTextbox } from "./textbox"
+import { fromEvent } from "rxjs";
+import { take } from "rxjs/operators";
 
-sceneTransition("menu")
+fromEvent(document.getElementById("play"),"click").pipe(
+    take(1)
+).subscribe((e) => sceneTransition("intro"))
+
+// sceneTransition("menu")
 addOnSceneTransition("game", () => {
     start(getScene("game"))
     // setTimeout(() => sceneTransition("menu"), 6000)

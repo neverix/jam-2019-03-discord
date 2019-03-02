@@ -10,7 +10,7 @@ export function start(rootElement: HTMLElement = document.body) {
     const canvas = loadCanvas(rootElement)
     const ctx = canvas.getContext("2d")
 
-    const player = new Player(new Vector(0,0),new Vector(30,30))
+    const player = new Player(new Vector(),new Vector(30,30))
 
     // camera
     const camera = new Camera()
@@ -29,10 +29,6 @@ export function start(rootElement: HTMLElement = document.body) {
         // move to center of screen
         ctx.save()
         ctx.translate(canvas.width / 2, canvas.height / 2)
-
-        // // Fill with gradient
-        // ctx.fillStyle = grd;
-        // ctx.fillRect(0,0, canvas.width, canvas.height)
 
         //move the camera after the player
         camera.target = player.position

@@ -1,6 +1,7 @@
 import { html, render } from "lit-html"
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js'
-import { fromEvent, Observable } from "rxjs";
+import { fromEvent, Observable, Subscription } from "rxjs";
+import {take} from "rxjs/operators"
 import { Key } from "ts-keycode-enum";
 
 // delay between typed characters
@@ -43,54 +44,51 @@ function typeText(
     // remove the typer if it exists
     if (typerId)
         clearInterval(typerId)
-    // create a new typer
-    typerId = setInterval(() => typer(buttons), typerDelay)
-
+    
     //write the entrie string when you press Enter
-    const skipEvent = fromEvent(document,"keydown").subscribe((e:KeyboardEvent) => {
-        if (e.which == Key.Enter){
+    const skipEvent = fromEvent(document, "keydown").pipe(
+        take(1)
+    ).subscribe((e: KeyboardEvent) => {
+        if (e.which == Key.Enter) {
             //render the full text
-            renderText(text,buttons)
+            renderText(text, buttons)
 
             //clear the interval
             clearInterval(typerId)
-
-            //unsubscribe the last event
-            skipEvent.unsubscribe()
 
             //set up new events
             setupSkippingButtonPress(buttons)
         }
     })
+
+    // create a new typer
+    typerId = setInterval(() => typer(buttons, skipEvent), typerDelay)
 }
 
 //automatically run the first button
-function setupSkippingButtonPress(buttons:Buttons):Observable<Event>{
-    //observable to return
-    const skipButtonPress = fromEvent(document,"keydown")
-
+function setupSkippingButtonPress(buttons: Buttons): Subscription {
+    const skipButtonPress = fromEvent(document, "keydown")
+    
     //save the subscription in a variable to unsubscribe later
-    const subscription = skipButtonPress.subscribe((e:KeyboardEvent) => {
-    if (e.which == Key.Enter){
+    const subscription = skipButtonPress.pipe(
+        take(1)
+    ).subscribe((e: KeyboardEvent) => {
         //run the onclick of the frst button
-        buttons[0].onClick()
-
-        //unsubscribe from the event
-        subscription.unsubscribe()
-    }
+        if (e.which == Key.Enter) 
+            buttons[0].onClick()
     })
 
-    return skipButtonPress
+    return subscription
 }
 
 // the typer types text to the textbox
-function typer(buttons: Buttons) {
+function typer(buttons: Buttons, event: Subscription) {
     // check if the entire text has been written
     if (currentLetter >= sourceText.length) {
+        //clear old event
+        event.unsubscribe()
         // stop the typer
         clearInterval(typerId)
-        //set up events
-        setupSkippingButtonPress(buttons)
     } else {
         // copy the current letter from the source to the textbox
         let char = sourceText[currentLetter]
@@ -119,7 +117,7 @@ function renderText(textSoFar: string, buttons: Buttons) {
                         <!-- display the button text -->
                         ${button.text}
                     </a>`)
-                }
+            }
             `
         , textboxDiv)
 }
