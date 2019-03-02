@@ -1,0 +1,10 @@
+@import "colors.scss";
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px getColor(glow-2), 0 0 20px getColor(glow-2), 0 0 30px getColor(glow-1), 0 0 40px getColor(glow-1), 0 0 50px getColor(glow-1), 0 0 60px getColor(glow-1), 0 0 70px getColor(glow-1);
+    }
+    to {
+        text-shadow: 0 0 20px getColor(glow-2), 0 0 30px getColor(glow-1), 0 0 40px getColor(glow-2), 0 0 50px getColor(glow-1), 0 0 60px getColor(glow-1), 0 0 70px getColor(glow-1), 0 0 80px getColor(glow-1);
+    }
+}
