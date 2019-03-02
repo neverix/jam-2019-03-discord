@@ -1,27 +1,13 @@
-import { loadCanvas } from "./assets"
-import * as mainloop from "mainloop.js"
+import { sceneTransition, addOnSceneTransition, getScene } from "./scenes"
+import { start } from "./game"
 
-// start the game
-function start() {
-    // wanted size
-    const widthWanted = 500
-    const heightWanted = 400
+sceneTransition("menu")
+addOnSceneTransition("game", () => {
+    start(getScene("game"))
+    setTimeout(() => {
+        sceneTransition("menu")
+    }, 2000)
+})
 
-    // load canvas
-    const canvas = loadCanvas(widthWanted, heightWanted)
-    const ctx = canvas.getContext("2d")
-
-    // set up game state update and drawing
-    mainloop.setUpdate((delta) => {
-        // state update
-    }).setDraw(() => {
-        // drawing
-        // background
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        ctx.fillStyle = "#000000"
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-    }).start()
-}
-
-// start the game
-start()
+// @ts-ignore black magic
+window.sceneTransition = sceneTransition

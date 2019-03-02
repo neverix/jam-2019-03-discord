@@ -11,12 +11,15 @@ function loadAudio(path: string): HTMLAudioElement {
 }
 
 // load canvas
-function loadCanvas(widthWanted: number, heightWanted: number): HTMLCanvasElement {
+function loadCanvas(
+    widthWanted: number,
+    heightWanted: number,
+    rootElement: HTMLElement = document.body): HTMLCanvasElement {
     // create canvas if it doesn't exist
     if (document.getElementsByTagName("canvas").length == 0) {
         const canvas = document.createElement("canvas")
         canvas.id = "canvas"
-        document.body.appendChild(canvas)
+        rootElement.appendChild(canvas)
     }
     // get the canvas and set it up
     const canvas = document.getElementById("canvas") as HTMLCanvasElement

@@ -10,7 +10,8 @@
             "es2017",
             "dom"
         ],
-        "noImplicitAny": true
+        "noImplicitAny": true,
+        "alwaysStrict": true
     },
     "include": [
         "src/**/*.ts"
