@@ -40,7 +40,6 @@ module.exports = {
         ]
     },
     entry: [
-        'core-js',
         "./src/index.ts"
     ]
 };

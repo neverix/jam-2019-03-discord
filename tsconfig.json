@@ -9,7 +9,8 @@
             "es2015",
             "es2017",
             "dom"
-        ]
+        ],
+        "noImplicitAny": true
     },
     "include": [
         "src/**/*.ts"
