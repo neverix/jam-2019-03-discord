@@ -1,5 +1,7 @@
 import { html, render } from "lit-html"
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js'
+import { fromEvent, Observable } from "rxjs";
+import { Key } from "ts-keycode-enum";
 
 // delay between typed characters
 const typerDelay = 50
@@ -43,6 +45,42 @@ function typeText(
         clearInterval(typerId)
     // create a new typer
     typerId = setInterval(() => typer(buttons), typerDelay)
+
+    //write the entrie string when you press Enter
+    const skipEvent = fromEvent(document,"keydown").subscribe((e:KeyboardEvent) => {
+        if (e.which == Key.Enter){
+            //render the full text
+            renderText(text,buttons)
+
+            //clear the interval
+            clearInterval(typerId)
+
+            //unsubscribe the last event
+            skipEvent.unsubscribe()
+
+            //set up new events
+            setupSkippingButtonPress(buttons)
+        }
+    })
+}
+
+//automatically run the first button
+function setupSkippingButtonPress(buttons:Buttons):Observable<Event>{
+    //observable to return
+    const skipButtonPress = fromEvent(document,"keydown")
+
+    //save the subscription in a variable to unsubscribe later
+    const subscription = skipButtonPress.subscribe((e:KeyboardEvent) => {
+    if (e.which == Key.Enter){
+        //run the onclick of the frst button
+        buttons[0].onClick()
+
+        //unsubscribe from the event
+        subscription.unsubscribe()
+    }
+    })
+
+    return skipButtonPress
 }
 
 // the typer types text to the textbox
@@ -51,6 +89,8 @@ function typer(buttons: Buttons) {
     if (currentLetter >= sourceText.length) {
         // stop the typer
         clearInterval(typerId)
+        //set up events
+        setupSkippingButtonPress(buttons)
     } else {
         // copy the current letter from the source to the textbox
         let char = sourceText[currentLetter]

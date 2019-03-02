@@ -13,7 +13,7 @@ addOnSceneTransition("game", () => {
 window.sceneTransition = sceneTransition
 
 addOnSceneTransition("intro", () => {
-    typeText(`Hi`, [
+    typeText(`Hsdfsdfffffffffffffsssssadoisnpaeprghaep9rg8dhap9sidgfapdhas'9[edgh[OEFHI[Peh'[aep9hf[s9dfhgp[i`, [
         {
             text: "OK",
             onClick: () => {
