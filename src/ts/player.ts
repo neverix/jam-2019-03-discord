@@ -12,7 +12,8 @@ class Player {
 
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
-        public size: Vector = new Vector(100, 100)) {
+        public size: Vector = new Vector(100, 100),
+        public enviromentSize:number) {
 
         //set up events
         fromEvent(document, "keydown")
@@ -36,6 +37,12 @@ class Player {
         
         //moves the player
         this.position = this.position.add(this.direction.mul(delta * this.speedMultiplier))
+
+        //keep the object in the world
+        if (this.position.x < -this.enviromentSize) this.position.x = -this.enviromentSize
+        else if (this.position.x + this.size.x > this.enviromentSize) this.position.x = this.enviromentSize - this.size.x
+        if (this.position.y < -this.enviromentSize) this.position.y = -this.enviromentSize
+        else if (this.position.y + this.size.y > this.enviromentSize) this.position.y = this.enviromentSize - this.size.y
     }
     //draws
     draw(ctx:CanvasRenderingContext2D){

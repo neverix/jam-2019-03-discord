@@ -4,14 +4,13 @@ import { typeText, hideTextbox } from "./textbox"
 import { fromEvent } from "rxjs";
 import { take } from "rxjs/operators";
 
+//set up the first button
 fromEvent(document.getElementById("play"),"click").pipe(
     take(1)
 ).subscribe((e) => sceneTransition("intro"))
 
-// sceneTransition("menu")
 addOnSceneTransition("game", () => {
     start(getScene("game"))
-    // setTimeout(() => sceneTransition("menu"), 6000)
 })
 
 // add the sceneTransition() function to the window object so that it's accessible to outside scripts

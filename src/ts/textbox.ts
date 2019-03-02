@@ -50,14 +50,28 @@ function typeText(
         take(1)
     ).subscribe((e: KeyboardEvent) => {
         if (e.which == Key.Enter) {
+            //set up new events
+            const subscription = setupSkippingButtonPress(buttons)
+
             //render the full text
-            renderText(text, buttons)
+            renderText(text, buttons.map(
+                (val,index) => {
+                    //change the first element, such as it unsubscribes on click
+                    if (index == 0){
+                        return {
+                            text:val.text,
+                            onClick: () => {
+                                subscription.unsubscribe()
+                                val.onClick()
+                            }
+                        }
+                    }
+                    return val
+                }
+            ))
 
             //clear the interval
             clearInterval(typerId)
-
-            //set up new events
-            setupSkippingButtonPress(buttons)
         }
     })
 

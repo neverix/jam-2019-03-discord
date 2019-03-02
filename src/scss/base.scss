@@ -9,6 +9,7 @@ body,html {
     padding: 0;
     width: 100%;
     overflow-y: hidden;
+    background-color: blue;
 }
 
 #textbox-div {
@@ -73,4 +74,8 @@ image{
 
 #logo{
     width:$menu-width * 1.5;
+}
+
+canvas{
+    background-color: black;
 }

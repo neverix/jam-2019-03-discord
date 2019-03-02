@@ -3,6 +3,7 @@ import * as mainloop from "mainloop.js"
 import Camera from "./camera"
 import Vector from "./vector";
 import { Player } from "./player";
+import { bg } from "./bg";
 
 // start the game
 export function start(rootElement: HTMLElement = document.body) {
@@ -10,17 +11,21 @@ export function start(rootElement: HTMLElement = document.body) {
     const canvas = loadCanvas(rootElement)
     const ctx = canvas.getContext("2d")
 
-    const player = new Player(new Vector(),new Vector(30,30))
+    const wordSize = 300;
+    const player = new Player(new Vector(),new Vector(30,30),wordSize)
 
     // camera
     const camera = new Camera()
 
     //to update
-    const updateable = [camera,player];
+    const updateable = [camera,bg(wordSize),player];
 
     // set up game state update and drawing
     mainloop.setUpdate((delta:number) => {
-        updateable.forEach((val) => val.update(delta));
+        updateable.forEach((val) => {
+            if (val.update)
+                val.update(delta)
+        });
     }).setDraw(() => {
         // drawing
         // clear
@@ -36,9 +41,6 @@ export function start(rootElement: HTMLElement = document.body) {
         //draw all objects wich have a draw method
         for (let i of updateable)
             if (i.draw) i.draw(ctx)
-
-        ctx.fillStyle = "#ffff00";
-        ctx.fillRect(100,100,160,150);
 
         // restore position
         ctx.restore()
