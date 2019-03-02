@@ -8,7 +8,7 @@ class Player {
     direction = new Vector(0,0)
 
     //multiplied with the direction and delta to get the speed
-    speedMultiplier = 1
+    speedMultiplier = 0.3
 
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
