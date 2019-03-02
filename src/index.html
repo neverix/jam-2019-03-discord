@@ -7,30 +7,19 @@
 </head>
 
 <body>
-    <div id=textbox-div>
-    </div>
-    <div class=scene id=menu>
-        <!-- @Yugiohxlight! please do this. I'm not good at at HTML5 and CSS so here's a placeholder-->
-        <h1>Hello world</h1>
-        <p><a onclick='sceneTransition("intro")' href=#>yo start game</a></p>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
-        <h1>yo</h1>
+    <div id=textbox-div style="display:none"></div>
+    <div class=scene id="menu">
+        <!--
+            I need this container to be able to use display:flex, 
+            otherwise js would change it to block
+        -->
+        <div id="menu-container">
+            <img src="../res/html/logo.png" alt="logo" id="logo" ondragstart="return false">
+            <div id="buttons">
+                <button onclick='sceneTransition("intro")' class="button">Yo start game</button>
+                <button onclick='sceneTransition("intro")' class="button">Some other thing</button>
+            </div>
+        </div>
     </div>
     <div class=scene id=intro></div>
     <div class=scene id=game>

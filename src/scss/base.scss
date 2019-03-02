@@ -1,9 +1,14 @@
-body {
-    margin: 0;
-    width: 100%
-}
+@import "colors.scss";
 
+$menu-width: 20%;
 $textbox-height: 40%;
+
+body,html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-y: hidden;
+}
 
 #textbox-div {
     position: fixed;
@@ -12,7 +17,7 @@ $textbox-height: 40%;
     width: 100%;
     top: 100% - $textbox-height;
     height: $textbox-height;
-    background: lightgray;
+    background: getColor(textbox-bg);
 }
 
 #textbox-hide {
@@ -20,5 +25,48 @@ $textbox-height: 40%;
 }
 
 .textbox-button {
-    color: darkred
+    color: color(textbox-button-bg);
+}
+
+#menu{
+    background-color: getColor(menu-bg);
+    position: absolute;
+    width: 100%;
+    height:100%;
+    #menu-container{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        #buttons{
+            background-color: getColor(buttons-bg);
+            padding: 10px;
+            border-radius: 5%;
+            width:$menu-width;
+            display: flex;
+            justify-content: space-around;
+            flex-direction: column;
+        }
+    }
+}
+
+.button,.button:active,.button:hover{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-family: "Roboto";
+    font-size: 150%;
+}
+.button{
+    margin:3%;
+}
+
+image{
+    user-select: none;  
+}
+
+#logo{
+    width:$menu-width * 1.5;
 }

@@ -19,15 +19,17 @@ export default class Vector {
         return new Vector(this.x * other, this.y * other)
     }
 
-
     div(other: number) {
         return new Vector(this.x / other, this.y / other)
     }
 
-    get len() {
-        return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
+    get mirrot(){
+        return new Vector(-this.x,-this.y)
     }
 
+    get len() {
+        return Math.sqrt(this.x**2 + this.y**2)
+    }
     // normalize
     norm() {
         // cache length

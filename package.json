@@ -36,6 +36,8 @@
     },
     "dependencies": {
         "lit-html": "^1.0.0",
-        "mainloop.js": "^1.0.4"
+        "mainloop.js": "^1.0.4",
+        "rxjs": "^6.4.0",
+        "ts-keycode-enum": "^1.0.6"
     }
 }

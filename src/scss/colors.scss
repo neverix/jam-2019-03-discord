@@ -1,0 +1,10 @@
+$colors: (
+    menu-bg: #000000,
+    buttons-bg: rgba(128,128,128,0.5),
+    textbox-bg: lightgray,
+    textbox-button-bg: darkred
+);
+
+@function getColor($name){
+    @return map-get($colors,$name)
+}

@@ -1,6 +1,8 @@
 import { loadCanvas } from "./assets"
 import * as mainloop from "mainloop.js"
 import Camera from "./camera"
+import Vector from "./vector";
+import { Player } from "./player";
 
 // start the game
 export function start(rootElement: HTMLElement = document.body) {
@@ -8,39 +10,39 @@ export function start(rootElement: HTMLElement = document.body) {
     const canvas = loadCanvas(rootElement)
     const ctx = canvas.getContext("2d")
 
+    const player = new Player(new Vector(0,0),new Vector(30,30))
+
     // camera
     const camera = new Camera()
 
+    //to update
+    const updateable = [camera,player];
+
     // set up game state update and drawing
-    mainloop.setUpdate((delta) => {
-        // state update
-        camera.update(delta)
+    mainloop.setUpdate((delta:number) => {
+        updateable.forEach((val) => val.update(delta));
     }).setDraw(() => {
         // drawing
         // clear
         ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-        // move a bit
+        // move to center of screen
         ctx.save()
         ctx.translate(canvas.width / 2, canvas.height / 2)
 
-        // camera
-        camera.draw(ctx)
+        // // Fill with gradient
+        // ctx.fillStyle = grd;
+        // ctx.fillRect(0,0, canvas.width, canvas.height)
 
-        // background
-        ctx.fillStyle = "#ffffff"
-        ctx.beginPath()
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        //move the camera after the player
+        camera.target = player.position
 
-        // gradient
-        var grd = ctx.createLinearGradient(0, 0, canvas.width / 2, 0)
-        grd.addColorStop(0, "red")
-        grd.addColorStop(1, "white")
+        //draw all objects wich have a draw method
+        for (let i of updateable)
+            if (i.draw) i.draw(ctx)
 
-        // Fill with gradient
-        ctx.beginPath()
-        ctx.fillStyle = grd;
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
+        ctx.fillStyle = "#ffff00";
+        ctx.fillRect(100,100,160,150);
 
         // restore position
         ctx.restore()

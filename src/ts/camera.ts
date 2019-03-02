@@ -1,13 +1,15 @@
 import Vector from "./vector"
 
 export default class Camera {
-    position: Vector = new Vector()
+    position = new Vector()
+    target = new Vector()
+    movementSteps = 13
 
-    update(delta: number) {
-        this.position.x += delta * 0.05
+    update(delta: number){
+        this.position = this.position.add(this.target.sub(this.position).div(this.movementSteps));
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        ctx.translate(this.position.x, this.position.y)
+        ctx.translate(-this.position.x,-this.position.y)
     }
 }

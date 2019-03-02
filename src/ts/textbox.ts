@@ -39,9 +39,8 @@ function typeText(
     // set the target text
     sourceText = text
     // remove the typer if it exists
-    if (typerId) {
+    if (typerId)
         clearInterval(typerId)
-    }
     // create a new typer
     typerId = setInterval(() => typer(buttons), typerDelay)
 }

@@ -5,7 +5,7 @@ import { typeText, hideTextbox } from "./textbox"
 sceneTransition("menu")
 addOnSceneTransition("game", () => {
     start(getScene("game"))
-    setTimeout(() => sceneTransition("menu"), 6000)
+    // setTimeout(() => sceneTransition("menu"), 6000)
 })
 
 // add the sceneTransition() function to the window object so that it's accessible to outside scripts
@@ -13,7 +13,7 @@ addOnSceneTransition("game", () => {
 window.sceneTransition = sceneTransition
 
 addOnSceneTransition("intro", () => {
-    typeText(`yay\nhello world\nyoyoyoyoyooyyoyoyoyooyoyoyoyoyoyoy`, [
+    typeText(`Hi`, [
         {
             text: "OK",
             onClick: () => {
