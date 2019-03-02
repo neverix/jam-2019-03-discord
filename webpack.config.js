@@ -1,4 +1,5 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
     devtool: 'inline-source-map',
     module: {
@@ -24,6 +25,13 @@ module.exports = {
                         options: {}
                     }
                 ]
+            },
+            {
+                test: /\.(scss|sass)$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader', 'sass-loader']
+                })
             }
         ]
     },
@@ -31,7 +39,13 @@ module.exports = {
         new HtmlWebPackPlugin({
             template: "./src/index.html",
             filename: "./index.html"
-        })
+        }),
+        new ExtractTextPlugin(
+            {
+                filename: 'style.css',
+                allChunks: true
+            }
+        )
     ],
     resolve: {
         extensions: [
