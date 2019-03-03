@@ -28,6 +28,9 @@ export function start(rootElement: HTMLElement = document.body) {
     //to update
     const updateable = [camera, bg(worldSize), test, player, characters]
 
+    //enablt night 
+    document.getElementById("night").style.display = "block"
+
     // set up game state update and drawing
     mainloop.setUpdate((delta: number) => {
         for (let i of updateable) {

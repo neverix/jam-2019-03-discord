@@ -141,3 +141,11 @@ canvas{
     z-index: 100000000000000;
     border-top-left-radius: 25%
 }
+
+#night{
+    @include full;
+    background-color: black;
+    z-index: 100;
+    opacity: 0;
+    display: none;  
+}

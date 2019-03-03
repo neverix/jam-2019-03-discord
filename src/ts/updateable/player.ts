@@ -7,6 +7,7 @@ import { Bullet } from "./bullet";
 
 import { typeText, hideTextbox, Buttons } from "../textbox"
 import { questions, Question } from "../question";
+import fade from "../fading";
 
 // greetings the characters can say
 const greetings = [
@@ -49,6 +50,12 @@ class Player {
     //remember last poition
     lastPosition = new Vector()
 
+    //keep track of the time
+    night = false
+
+    //used to show the night time
+    coverElement = document.getElementById("night")
+
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
         public size: Vector = new Vector(100, 100),
@@ -62,6 +69,20 @@ class Player {
                 this.lastPosition
             )
         })
+
+        //just for testing 
+        fromEvent(document,"keydown").subscribe((e:KeyboardEvent) => {
+            if (e.which == Key.Q){
+                this.toggleTime()
+                console.log("event!!");
+                
+            }
+        })
+    }
+
+    toggleTime() {
+        this.night = !this.night
+        fade(this.coverElement,1000,this.night,20,this.night?0.5:0,this.night?0:0.5)
     }
 
     //call in constructor and after dialog
