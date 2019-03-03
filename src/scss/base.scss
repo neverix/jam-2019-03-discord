@@ -20,14 +20,17 @@ body,html {
     top: 100% - $textbox-height;
     height: $textbox-height;
     background: getColor(textbox-bg);
+    p {
+        color: getColor(textbox-fg);
+    }
 }
 
 #textbox-hide {
     display: none
 }
 
-.textbox-button {
-    color: color(textbox-button-bg);
+.textbox-button,.textbox-button:visited {
+    color: getColor(textbox-button-bg);
 }
 
 #menu{
@@ -43,9 +46,9 @@ body,html {
         justify-content: space-evenly;
         align-items: center;
         #buttons{
-            background-color: getColor(buttons-bg);
             padding: 10px;
-            border-radius: 5%;
+            border-radius: 2%;
+            border: 2px getColor(buttons-border) solid;
             width:$menu-width;
             display: flex;
             justify-content: space-around;
@@ -58,8 +61,9 @@ body,html {
     background-color: transparent;
     border: none;
     outline: none;
+    color: getColor(buttons-border);
     font-family: "Roboto";
-    font-size: 150%;
+    font-size: 175%;
 }
 .button{
     margin:3%;
