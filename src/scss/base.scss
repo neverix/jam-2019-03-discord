@@ -35,7 +35,7 @@ body,html {
     background-color: getColor(textbox-button-bg);
     color: getColor(textbox-button-fg);
     padding: 4px 7px;
-    text-align: center; 
+    text-align: center;
     text-decoration: none;
     display: inline-block;
 }
@@ -65,14 +65,14 @@ body,html {
 }
 
 .button,.button:active,.button:hover{
+    text-align: center;
+    text-decoration: none;
     background-color: transparent;
     border: none;
     outline: none;
     color: getColor(buttons-border);
     font-family: "Roboto";
     font-size: 175%;
-}
-.button{
     margin:3%;
 }
 .button:hover{
