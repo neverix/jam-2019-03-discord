@@ -20,7 +20,7 @@ function closeFullscreen(): Promise<any> {
                 data => res(data)
             ).catch(
                 data => rej(data)
-            );
+            )
         else
             rej("Full screen is not avabile")
     })

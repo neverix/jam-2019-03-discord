@@ -5,7 +5,12 @@ import { rectCollision } from "../collision"
 import { QuestionAnswer, questions, Question } from "../question"
 import { Buttons } from "../textbox"
 
+const texture = new Image(100,100)
+texture.src = "../../../res/textures/character.png"
+
 export default class Character {
+    //texture
+    texture:HTMLImageElement = texture
     // position of the character
     position: Vector
     // name. you can modify the vowels and consonants to make it sound differently
@@ -18,6 +23,9 @@ export default class Character {
     questionAnswers: { [question: string]: QuestionAnswer } = {}
     // questions aready answered
     answeredQuestions: Set<string> = new Set()
+
+    //offset for streching
+    offset = new Vector(5,15)
 
     constructor(worldSize: number, public size: Vector, private player: Player) {
         //i like to have the short form
@@ -64,9 +72,7 @@ export default class Character {
 
     // draw the character
     draw(ctx: CanvasRenderingContext2D) {
-        // placeholder art
-        ctx.fillStyle = "red"
-        ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y)
+        ctx.drawImage(this.texture,this.position.x - this.offset.x / 2, this.position.y - this.offset.y / 2, this.size.x + this.offset.x, this.size.y + this.offset.y)
 
         //display name
         ctx.fillStyle = "black"

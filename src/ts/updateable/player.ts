@@ -2,12 +2,14 @@ import Vector from "../vector"
 import { fromEvent, Observable, Subscription, interval } from "rxjs"
 import { Key } from "ts-keycode-enum"
 import Character from "./character"
-import { throttle } from "rxjs/operators"
+import { throttle, timeout, take } from "rxjs/operators"
 import { Bullet } from "./bullet"
 
 import { typeText, hideTextbox, Buttons } from "../textbox"
 import { questions, Question } from "../question"
 import fade from "../fading"
+
+declare function require<T>(file: string): T
 
 // greetings the characters can say
 const greetings = [
@@ -29,6 +31,26 @@ const reactions = [
 
 //main player class
 class Player {
+    //paths to images
+    paths: {
+        [ley: string]: string
+    } = {
+            front: "../../../res/textures/front.png",
+            left: "../../../res/textures/left.png",
+            right: "../../../res/textures/right.png",
+            back: "../../../res/textures/back.png"
+        }
+
+    //actual images
+    textures: {
+        front?: HTMLImageElement
+        back?: HTMLImageElement
+        left?: HTMLImageElement
+        right?: HTMLImageElement
+        [key:string]:HTMLImageElement
+    } = {
+        
+    }
     //keep track of direction
     direction = new Vector(0, 0)
 
@@ -56,10 +78,19 @@ class Player {
     //used to show the night time
     coverElement = document.getElementById("night")
 
+    //time stamps
+    lastTransition = performance.now()
+    dayLength = 30000
+
+    //remember last texture
+    lastTexture:HTMLImageElement
+
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
         public size: Vector = new Vector(100, 100),
         public enviromentSize: number) {
+
+        this.lastTransition = performance.now()
 
         this.bindEvents()
 
@@ -71,13 +102,19 @@ class Player {
         })
 
         //just for testing 
-        fromEvent(document,"keydown").subscribe((e:KeyboardEvent) => {
-            if (e.which == Key.Q){
+        fromEvent(document, "keydown").subscribe((e: KeyboardEvent) => {
+            if (e.which == Key.Q) {
                 this.toggleTime()
                 console.log("event!!")
-                
+
             }
         })
+
+        //load paths
+        for (let i in this.paths) {
+            this.textures[i] = new Image(100, 100)
+            this.textures[i].src = this.paths[i]
+        }
     }
 
     toggleTime() {
@@ -85,9 +122,12 @@ class Player {
 
         //change the display of the cover element
         if (this.night) this.coverElement.style.display = "block"
-        else this.coverElement.style.display = "none"
-
-        fade(this.coverElement,1000,this.night,20,this.night?0.5:0,this.night?0:0.5)
+        else interval(2000).pipe(
+            take(1)
+        ).subscribe(
+            e => this.coverElement.style.display = "none"
+        )
+        fade(this.coverElement, 1000, this.night, 20, this.night ? 0.5 : 0, this.night ? 0 : 0.5)
     }
 
     //call in constructor and after dialog
@@ -105,7 +145,7 @@ class Player {
             else if ((e.which == Key.W || e.which == Key.UpArrow) && this.direction.y == -1) this.direction.y = 0
             else if ((e.which == Key.S || e.which == Key.DownArrow) && this.direction.y == 1) this.direction.y = 0
         })
-        const mousedown = fromEvent(document, "mousedown").subscribe((e:MouseEvent) => {
+        const mousedown = fromEvent(document, "mousedown").subscribe((e: MouseEvent) => {
             this.lastPosition = (new Vector(e.clientX, e.clientY))
                 .sub(new Vector(window.innerWidth / 2, window.innerHeight / 2))
             this.pressed = true
@@ -130,6 +170,12 @@ class Player {
 
     //delta passed from mainloops update
     update(delta: number) {
+        //decide what part of the day it is
+        if (this.subscriptions.length > 0 && performance.now() - this.lastTransition >= this.dayLength) {
+            this.lastTransition = performance.now()
+            this.toggleTime()
+        }
+
         //moves the player
         this.position = this.position.add(this.direction.mul(delta * this.speedMultiplier))
 
@@ -151,8 +197,16 @@ class Player {
     draw(ctx: CanvasRenderingContext2D) {
         //placeholder for art
         //also , do u know any way to make spread operator (...) work in ts?
-        ctx.fillStyle = "orange"
-        ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y)
+        let texture = this.lastTexture;
+        if (this.direction.y == 1) texture = this.textures.front
+        else if (this.direction.y == -1) texture = this.textures.back
+        else if (this.direction.x == 1) texture = this.textures.right
+        else if (this.direction.x == -1) texture = this.textures.left
+        else if (!texture) texture = this.textures.back
+
+        this.lastTexture = texture
+
+        ctx.drawImage(texture,this.position.x, this.position.y, this.size.x, this.size.y)
 
         //draw bullets
         this.bullets.forEach(val => val.draw(ctx))

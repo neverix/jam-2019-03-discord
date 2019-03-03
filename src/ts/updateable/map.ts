@@ -21,9 +21,9 @@ interface TileMap {
 class MapLoader {
     //we would replace this with textures
     colors = {
-        53: "blue",
-        1: "yellow",
-        2: "green"
+        53: "#888888",
+        1: "#aaaaaa",
+        2: "#775577"
     }
     //the map imported from tiled
     map: TileMap;
