@@ -7,15 +7,11 @@ import { take } from "rxjs/operators"
 //set up the first button
 fromEvent(document.getElementById("play"), "click").pipe(
     take(1)
-).subscribe((e) => sceneTransition("intro"))
+).subscribe((_e) => sceneTransition("intro"))
 
 addOnSceneTransition("game", () => {
     start(getScene("game"))
 })
-
-// add the sceneTransition() function to the window object so that it's accessible to outside scripts
-// @ts-ignore black magic
-window.sceneTransition = sceneTransition
 
 addOnSceneTransition("intro", () => {
     typeText(`yoyoyoyo gangsta`, [
@@ -28,3 +24,6 @@ addOnSceneTransition("intro", () => {
         }
     ])
 })
+
+// go to menu in the beginning
+sceneTransition("menu")

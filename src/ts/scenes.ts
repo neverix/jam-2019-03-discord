@@ -1,7 +1,7 @@
 import fade from './fading'
 
 // length of the fade in milliseconds
-const fadeLength = 500
+const fadeLength = 1000
 // length of a fading frame in milliseconds
 const fadeFrameLength = 20
 
