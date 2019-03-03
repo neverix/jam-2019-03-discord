@@ -18,7 +18,12 @@ class Player {
     constructor(public position: Vector = new Vector(0, 0),
         public size: Vector = new Vector(100, 100),
         public enviromentSize: number) {
+        
+        this.bindEvents()
+    }
 
+    //call in constructor and after dialog
+    bindEvents(){
         //set up events
         const keydown = fromEvent(document, "keydown")
         const keydownSubscrption = keydown.subscribe((e: KeyboardEvent) => {
@@ -39,6 +44,7 @@ class Player {
         this.events.push(keyup,keydown)
         this.subscriptions.push(keydownSubscrption,keyupsubscription)
     }
+
     //delta passed from mainloops update
     update(delta: number) {
         //moves the player
@@ -62,12 +68,15 @@ class Player {
         //cancel all subscriptions
         this.subscriptions.forEach((val) => val.unsubscribe())
         this.subscriptions = []
+        this.events = []
 
         //reset direction
         this.direction = new Vector()
 
         // "push" the player out of the character
         this.position = this.position.add(collision)
+
+        //TODO: display textbox and call bindEvents after finishing
     }
 }
 
