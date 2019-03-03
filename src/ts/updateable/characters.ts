@@ -1,14 +1,17 @@
 import Character from "./character"
 import Vector from "../vector"
+import { Player } from "./player";
 
 export default class Characters {
     // list of all characters in the game
     characters: Character[] = []
 
-    constructor(worldSize: number, characterNumber: number = 5, size: Vector = new Vector(30, 30)) {
+    constructor(
+        worldSize: number, private player: Player,
+        characterNumber: number = 5, size: Vector = new Vector(30, 30)) {
         // generate characters
         for (let i = 0; i < characterNumber; i++) {
-            this.characters.push(new Character(worldSize, size))
+            this.characters.push(new Character(worldSize, size, player))
         }
     }
 

@@ -19,7 +19,7 @@ export function start(rootElement: HTMLElement = document.body) {
     // camera
     const camera = new Camera()
     // characters
-    const characters = new Characters(worldSize, 15)
+    const characters = new Characters(worldSize, player, 5)
 
     //to update
     const updateable = [camera, bg(worldSize), player, characters]
