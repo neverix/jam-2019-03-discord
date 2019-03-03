@@ -4,6 +4,7 @@ import { typeText, hideTextbox } from "./textbox"
 import { fromEvent, interval } from "rxjs"
 import { take, throttle, withLatestFrom } from "rxjs/operators"
 import { openFullscreen, closeFullscreen } from "./fullscreen";
+import { Key } from "ts-keycode-enum";
 
 //keep trak of the size of the screen
 let fullScreen = false
@@ -12,7 +13,7 @@ let fullScreen = false
 const fullScreenIcon = document.getElementById("fs-icon")
 const fullScreenCloseIcon = document.getElementById("fs-exit-icon")
 
-fromEvent(document.getElementById("full-screen-button"),"click").pipe(
+fromEvent(document.getElementById("full-screen-button"), "click").pipe(
     throttle(e => interval(300))
 ).subscribe(async (e) => {
     //toggle fulls creen
@@ -22,19 +23,28 @@ fromEvent(document.getElementById("full-screen-button"),"click").pipe(
     let result;
 
     //do the correct action and toggle the icons
-    if (fullScreen){
+    if (fullScreen) {
         result = await openFullscreen()
         fullScreenIcon.style.display = "none"
         fullScreenCloseIcon.style.display = "block"
     }
-    else{
+    else {
         fullScreenIcon.style.display = "block"
-        fullScreenCloseIcon.style.display = "none" 
+        fullScreenCloseIcon.style.display = "none"
         result = await closeFullscreen()
     }
 
     //log it
     console.log(result);
+})
+
+//change icon if toggled with esc
+fromEvent(document,"fullscreenchange").subscribe(e => {
+    if (!document.fullscreen && fullScreen){
+        fullScreen = false
+        fullScreenIcon.style.display = "block"
+        fullScreenCloseIcon.style.display = "none"
+    }
 })
 
 //set up the first button

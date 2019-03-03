@@ -2,11 +2,12 @@ import Vector from "../vector"
 import { fromEvent, Observable, Subscription, interval } from "rxjs"
 import { Key } from "ts-keycode-enum"
 import Character from "./character"
-import { throttle } from "rxjs/operators";
-import { Bullet } from "./bullet";
+import { throttle } from "rxjs/operators"
+import { Bullet } from "./bullet"
 
 import { typeText, hideTextbox, Buttons } from "../textbox"
-import { questions, Question } from "../question";
+import { questions, Question } from "../question"
+import fade from "../fading"
 
 // greetings the characters can say
 const greetings = [
@@ -49,6 +50,12 @@ class Player {
     //remember last poition
     lastPosition = new Vector()
 
+    //keep track of the time
+    night = false
+
+    //used to show the night time
+    coverElement = document.getElementById("night")
+
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
         public size: Vector = new Vector(100, 100),
@@ -62,6 +69,25 @@ class Player {
                 this.lastPosition
             )
         })
+
+        //just for testing 
+        fromEvent(document,"keydown").subscribe((e:KeyboardEvent) => {
+            if (e.which == Key.Q){
+                this.toggleTime()
+                console.log("event!!")
+                
+            }
+        })
+    }
+
+    toggleTime() {
+        this.night = !this.night
+
+        //change the display of the cover element
+        if (this.night) this.coverElement.style.display = "block"
+        else this.coverElement.style.display = "none"
+
+        fade(this.coverElement,1000,this.night,20,this.night?0.5:0,this.night?0:0.5)
     }
 
     //call in constructor and after dialog
@@ -79,7 +105,9 @@ class Player {
             else if ((e.which == Key.W || e.which == Key.UpArrow) && this.direction.y == -1) this.direction.y = 0
             else if ((e.which == Key.S || e.which == Key.DownArrow) && this.direction.y == 1) this.direction.y = 0
         })
-        const mousedown = fromEvent(document, "mousedown").subscribe(e => {
+        const mousedown = fromEvent(document, "mousedown").subscribe((e:MouseEvent) => {
+            this.lastPosition = (new Vector(e.clientX, e.clientY))
+                .sub(new Vector(window.innerWidth / 2, window.innerHeight / 2))
             this.pressed = true
         })
         const mouseup = fromEvent(document, "mouseup").subscribe(e => {
@@ -96,8 +124,8 @@ class Player {
 
     //shoots
     shoot(delta: Vector) {
+        if (!this.night) return
         this.bullets.push(new Bullet(this.position.add(this.size.div(2)), delta.norm(), this.enviromentSize))
-        console.log(this.bullets);
     }
 
     //delta passed from mainloops update
@@ -131,6 +159,12 @@ class Player {
     }
     // used by characters to notify the player that a collision occured
     notifyCharacterCollision(character: Character, collision: Vector) {
+        // "push" the player out of the character
+        this.position = this.position.add(collision)
+
+        //disable talkng if its night
+        if (this.night) return
+
         //cancel all subscriptions
         this.subscriptions.forEach((val) => val.unsubscribe())
         this.subscriptions = []
@@ -141,10 +175,6 @@ class Player {
         //reset direction
         this.direction = new Vector()
 
-        // "push" the player out of the character
-        this.position = this.position.add(collision)
-
-        //TODO: display textbox and call bindEvents after finishing
         // i prefer the short form :)
         const { floor, random } = Math
 
