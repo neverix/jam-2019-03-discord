@@ -28,7 +28,7 @@ export default class Vector {
     }
 
     get len() {
-        return Math.sqrt(this.x ** 2 + this.y ** 2)
+        return Math.sqrt((this.x ** 2) + (this.y ** 2))
     }
     // normalize
     norm() {
