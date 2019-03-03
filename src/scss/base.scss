@@ -131,3 +131,13 @@ canvas{
 .scene{
     opacity: 0;
 }
+
+#full-screen-button{
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    color:getColor(full-screen);
+    background-color: getColor(full-screen-background);
+    z-index: 100000000000000;
+    border-top-left-radius: 25%
+}

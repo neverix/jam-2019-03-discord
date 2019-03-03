@@ -38,6 +38,44 @@ const questions: Question[] = [
             "339",
             "938"
         ]
+    },
+    {
+        name: "food",
+        question: "What is your favorite food?",
+        answerPrefix: "My favorite food is ",
+        answerPostfix: " .",
+        humanAnswers: [
+            "the banana",
+            "chocolate",
+            "cake",
+            "the tomato",
+            "pizza"
+        ],
+        vampireAnswers: [
+            "blood"
+        ]
+    },
+    {
+        name: "color",
+        question: "What is your favorite color?",
+        answerPrefix: "My favorite color is  ",
+        answerPostfix: " .",
+        humanAnswers: [
+            "black",
+            'red',
+            "blue",
+            "white",
+            "black",
+            "yellow",
+            "purple",
+            "orange",
+            "green",
+            "brown"
+        ],
+        vampireAnswers: [
+            "black",
+            "red"
+        ]
     }
 ]
 

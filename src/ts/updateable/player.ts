@@ -14,14 +14,16 @@ const greetings = [
     "Howdy!",
     "¡Hola!",
     "G'day!",
-    "Good evening!"
+    "Good evening!",
+    "Hi bro!"
 ]
 
 // reactions of the characters (e.g. questions they ask after the greeting)
 const reactions = [
     "What do you want from me?",
     "Is that you, Detective? Wanna ask me something?",
-    "Why are you here?"
+    "Why are you here?",
+    "You want something from me, don't you?"
 ]
 
 //main player class
