@@ -4,6 +4,7 @@ import Vector from "./vector"
 import Camera from "./updateable/camera"
 import { Player } from "./updateable/player"
 import { bg } from "./updateable/bg"
+import Characters from "./updateable/characters"
 
 // start the game
 export function start(rootElement: HTMLElement = document.body) {
@@ -11,14 +12,17 @@ export function start(rootElement: HTMLElement = document.body) {
     const canvas = loadCanvas(rootElement)
     const ctx = canvas.getContext("2d")
 
+    // world size
     const worldSize = 300
+    // player
     const player = new Player(new Vector(), new Vector(30, 30), worldSize)
-
     // camera
     const camera = new Camera()
+    // characters
+    const characters = new Characters(worldSize, 15)
 
     //to update
-    const updateable = [camera, bg(worldSize), player]
+    const updateable = [camera, bg(worldSize), player, characters]
 
     // set up game state update and drawing
     mainloop.setUpdate((delta: number) => {

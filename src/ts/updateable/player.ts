@@ -1,5 +1,5 @@
 import Vector from "../vector"
-import { Observable, fromEvent } from "rxjs"
+import { fromEvent } from "rxjs"
 import { Key } from "ts-keycode-enum"
 
 //main player class
