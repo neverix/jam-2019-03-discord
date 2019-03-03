@@ -51,11 +51,9 @@ class Player {
         ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y)
     }
     // used by characters to notify the player that a collision occured
-    notifyCharacterCollision(character: Character) {
+    notifyCharacterCollision(character: Character, collision: Vector) {
         // "push" the player out of the character
-        this.position = this.position.add(
-            this.position.sub(character.position)
-                .norm().mul(character.size.maxSide() / 4 + this.size.maxSide() / 4))
+        this.position = this.position.add(collision)
         // TODO, replace with disabling input and adding a textbox
         console.log(character)
     }

@@ -20,15 +20,19 @@ export default class Character {
             -worldSize + size.x + random() * (worldSize - size.x) * 2,
             -worldSize + size.y + random() * (worldSize - size.y) * 2)
 
-        this.name = getRandomName("euioa".split(''), "typsdfgklzcvbnm".split(''), 5 + floor(random() * this.randomFactor) - this.randomFactor / 2)
+        this.name = getRandomName(
+            "euioa".split(''),
+            "typsdfgklzcvbnm".split(''),
+            5 + floor(random() * this.randomFactor) - this.randomFactor / 2)
         console.log(this.name)
     }
 
     // update the character's state
     update(delta: number) {
         // check for collision with a player
-        if (rectCollision(this.position, this.player.position, this.size, this.player.size)) {
-            this.player.notifyCharacterCollision(this)
+        const collision = rectCollision(this.position, this.player.position, this.size, this.player.size)
+        if (collision) {
+            this.player.notifyCharacterCollision(this, collision)
         }
     }
 
