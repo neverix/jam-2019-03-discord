@@ -92,7 +92,7 @@ class Player {
 
     //number of days
     days = 0
-    maxNumberOfDays = 3
+    maxNumberOfDays = 8
 
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),

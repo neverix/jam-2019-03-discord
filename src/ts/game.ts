@@ -21,7 +21,7 @@ export function start(rootElement: HTMLElement = document.body) {
     // camera
     const camera = new Camera()
     // characters
-    const characters = new Characters(worldSize, player, 5)
+    const characters = new Characters(worldSize, player, 10)
 
     const test = new MapLoader("/maps/map1.js", worldSize)
 
