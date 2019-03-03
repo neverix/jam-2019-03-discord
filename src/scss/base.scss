@@ -1,8 +1,10 @@
 @import "colors.scss";
 @import "glow.scss";
+@import "center.scss";
 
 $menu-width: 20%;
 $textbox-height: 40%;
+$game-over-width: 40%;
 
 body,html {
     margin: 0;
@@ -48,10 +50,7 @@ body,html {
     #menu-container{
         width: 100%;
         height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-evenly;
-        align-items: center;
+        @include centered;
         #buttons{
             padding: 10px;
             border-radius: 2%;
@@ -79,7 +78,7 @@ body,html {
     animation: glow 1s ease-in-out infinite alternate;
 }
 
-image{
+*{
     user-select: none;  
 }
 
@@ -89,4 +88,46 @@ image{
 
 canvas{
     background-color: black;
+}
+
+#game-over{
+    #game-over-container{
+        @include full;
+        @include centered;
+        color:white;    
+        #game-over-title{
+            font-family: "Roboto";
+            font-size: 250%;
+        } 
+        #game-over-buttons-container{
+            width: $game-over-width;
+            // background-color: #80808080;
+            border: 3px solid white;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            border-radius: 5%;
+            .button-list{
+                padding:20%;
+                @include centered;
+                *{
+                    margin:10%;
+                }
+            }
+            #game-over-stats div:hover{
+                animation: none;
+            }
+            #game-over-stats div{
+                color:red;
+            }
+        }
+    }
+    @include full;
+}
+.red{
+    color:red;
+}
+
+.scene{
+    opacity: 0;
 }
