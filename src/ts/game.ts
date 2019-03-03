@@ -11,14 +11,14 @@ export function start(rootElement: HTMLElement = document.body) {
     const canvas = loadCanvas(rootElement)
     const ctx = canvas.getContext("2d")
 
-    const wordSize = 300
-    const player = new Player(new Vector(), new Vector(30, 30), wordSize)
+    const worldSize = 300
+    const player = new Player(new Vector(), new Vector(30, 30), worldSize)
 
     // camera
     const camera = new Camera()
 
     //to update
-    const updateable = [camera, bg(wordSize), player]
+    const updateable = [camera, bg(worldSize), player]
 
     // set up game state update and drawing
     mainloop.setUpdate((delta: number) => {
