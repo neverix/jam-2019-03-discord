@@ -1,4 +1,4 @@
-import Vector from "./vector"
+import Vector from "../vector"
 import { Observable, fromEvent } from "rxjs"
 import { Key } from "ts-keycode-enum"
 

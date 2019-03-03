@@ -1,9 +1,9 @@
 import { loadCanvas } from "./assets"
 import * as mainloop from "mainloop.js"
-import Camera from "./camera"
 import Vector from "./vector"
-import { Player } from "./player"
-import { bg } from "./bg"
+import Camera from "./updateable/camera"
+import { Player } from "./updateable/player"
+import { bg } from "./updateable/bg"
 
 // start the game
 export function start(rootElement: HTMLElement = document.body) {
