@@ -40,41 +40,58 @@ const questions: Question[] = [
         ]
     },
     {
-        name: "food",
-        question: "What is your favorite food?",
-        answerPrefix: "My favorite food is ",
-        answerPostfix: " .",
+        name: "place",
+        question: "Where do you live?",
+        answerPrefix: "I live in ",
+        answerPostfix: ".",
         humanAnswers: [
-            "the banana",
-            "chocolate",
-            "cake",
-            "the tomato",
+            "a flat",
+            "a house",
+            "the streets",
+            "a hotel"
+        ],
+        vampireAnswers: [
+            "a castle",
+            "a dark dungeon"
+        ]
+    },
+    {
+        name: "food",
+        question: "What is your favourite food?",
+        answerPrefix: "I like eating ",
+        answerPostfix: ".",
+        humanAnswers: [
+            "apples",
+            "oranges",
+            "chicken",
+            "beef",
+            "pork",
+            "hamburegers",
             "pizza"
         ],
         vampireAnswers: [
-            "blood"
+            "human blood"
         ]
     },
     {
         name: "color",
-        question: "What is your favorite color?",
-        answerPrefix: "My favorite color is  ",
-        answerPostfix: " .",
+        question: "What is your favourite color?",
+        answerPrefix: "My favourite color is ",
+        answerPostfix: ".",
         humanAnswers: [
-            "black",
-            'red',
-            "blue",
-            "white",
-            "black",
-            "yellow",
-            "purple",
             "orange",
+            "blue",
             "green",
-            "brown"
+            "white",
+            "pink",
+            "cyan",
+            "magenta",
+            "yellow",
+            "red"
         ],
         vampireAnswers: [
-            "black",
-            "red"
+            "dark, dark red",
+            "black! The blackest of black"
         ]
     }
 ]

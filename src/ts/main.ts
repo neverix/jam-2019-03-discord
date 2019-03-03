@@ -7,6 +7,11 @@ import { openFullscreen, closeFullscreen } from "./fullscreen";
 
 //keep trak of the size of the screen
 let fullScreen = false
+
+//the icons
+const fullScreenIcon = document.getElementById("fs-icon")
+const fullScreenCloseIcon = document.getElementById("fs-exit-icon")
+
 fromEvent(document.getElementById("full-screen-button"),"click").pipe(
     throttle(e => interval(300))
 ).subscribe(async (e) => {
@@ -16,11 +21,17 @@ fromEvent(document.getElementById("full-screen-button"),"click").pipe(
     //to log the result
     let result;
 
-    //do the correct action
-    if (fullScreen)
+    //do the correct action and toggle the icons
+    if (fullScreen){
         result = await openFullscreen()
-    else 
+        fullScreenIcon.style.display = "none"
+        fullScreenCloseIcon.style.display = "block"
+    }
+    else{
+        fullScreenIcon.style.display = "block"
+        fullScreenCloseIcon.style.display = "none" 
         result = await closeFullscreen()
+    }
 
     //log it
     console.log(result);
