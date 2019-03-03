@@ -1,5 +1,5 @@
 import Vector from "../vector"
-import { fromEvent } from "rxjs"
+import { fromEvent, Observable, Subscription } from "rxjs"
 import { Key } from "ts-keycode-enum"
 import Character from "./character"
 
@@ -11,26 +11,33 @@ class Player {
     //multiplied with the direction and delta to get the speed
     speedMultiplier = 0.3
 
+    events: Array<Observable<Event>> = []
+    subscriptions: Array<Subscription> = []
+
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
         public size: Vector = new Vector(100, 100),
         public enviromentSize: number) {
 
         //set up events
-        fromEvent(document, "keydown")
-            .subscribe((e: KeyboardEvent) => {
-                if (e.which == Key.A || e.which == Key.LeftArrow) this.direction.x = -1
-                else if (e.which == Key.D || e.which == Key.RightArrow) this.direction.x = 1
-                else if (e.which == Key.W || e.which == Key.UpArrow) this.direction.y = -1
-                else if (e.which == Key.S || e.which == Key.DownArrow) this.direction.y = 1
-            })
-        fromEvent(document, "keyup")
-            .subscribe((e: KeyboardEvent) => {
-                if ((e.which == Key.A || e.which == Key.LeftArrow) && this.direction.x == -1) this.direction.x = 0
-                else if ((e.which == Key.D || e.which == Key.RightArrow) && this.direction.x == 1) this.direction.x = 0
-                else if ((e.which == Key.W || e.which == Key.UpArrow) && this.direction.y == -1) this.direction.y = 0
-                else if ((e.which == Key.S || e.which == Key.DownArrow) && this.direction.y == 1) this.direction.y = 0
-            })
+        const keydown = fromEvent(document, "keydown")
+        const keydownSubscrption = keydown.subscribe((e: KeyboardEvent) => {
+            if (e.which == Key.A || e.which == Key.LeftArrow) this.direction.x = -1
+            else if (e.which == Key.D || e.which == Key.RightArrow) this.direction.x = 1
+            else if (e.which == Key.W || e.which == Key.UpArrow) this.direction.y = -1
+            else if (e.which == Key.S || e.which == Key.DownArrow) this.direction.y = 1
+        })
+        const keyup = fromEvent(document, "keyup")
+        const keyupsubscription = keyup.subscribe((e: KeyboardEvent) => {
+            if ((e.which == Key.A || e.which == Key.LeftArrow) && this.direction.x == -1) this.direction.x = 0
+            else if ((e.which == Key.D || e.which == Key.RightArrow) && this.direction.x == 1) this.direction.x = 0
+            else if ((e.which == Key.W || e.which == Key.UpArrow) && this.direction.y == -1) this.direction.y = 0
+            else if ((e.which == Key.S || e.which == Key.DownArrow) && this.direction.y == 1) this.direction.y = 0
+        })
+
+        //save events and subscriptions
+        this.events.push(keyup,keydown)
+        this.subscriptions.push(keydownSubscrption,keyupsubscription)
     }
     //delta passed from mainloops update
     update(delta: number) {
@@ -52,10 +59,15 @@ class Player {
     }
     // used by characters to notify the player that a collision occured
     notifyCharacterCollision(character: Character, collision: Vector) {
+        //cancel all subscriptions
+        this.subscriptions.forEach((val) => val.unsubscribe())
+        this.subscriptions = []
+
+        //reset direction
+        this.direction = new Vector()
+
         // "push" the player out of the character
         this.position = this.position.add(collision)
-        // TODO, replace with disabling input and adding a textbox
-        console.log(character)
     }
 }
 
