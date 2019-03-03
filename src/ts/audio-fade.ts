@@ -9,12 +9,8 @@ function audioFade(audio: HTMLAudioElement, frameCount: number, totalLength: num
         const sign = (start > end) ? -1 : 1
 
         let last = start
-
-        console.log(step)
-
+        
         const subscription = interval(totalLength / frameCount).subscribe(e => {
-            console.log(last);
-
             last -= step
 
             //be sure it in the good range

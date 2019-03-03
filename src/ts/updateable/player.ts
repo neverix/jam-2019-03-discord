@@ -14,12 +14,15 @@ import { audioFade } from "../audio-fade";
 
 declare function require<T>(file: string): T
 
-let light:HTMLAudioElement|null = new Audio("../../../res/music/light.mp3")
-let dark:HTMLAudioElement|null = new Audio("../../../res/music/dark.mp3")
+let light: HTMLAudioElement | null = new Audio("../../../res/music/light.mp3")
+let dark: HTMLAudioElement | null = new Audio("../../../res/music/dark.mp3")
 light.volume = 0
 dark.volume = 0
 light.loop = true
 dark.loop = true
+
+let voice = new Audio("../../../res/music/voice.mp3")
+voice.loop = true
 
 // greetings the characters can say
 const greetings = [
@@ -231,7 +234,7 @@ class Player {
     shoot(delta: Vector) {
         if (!this.night) return
         this.bullets.push(new Bullet(this.position.add(this.size.div(2)), delta.norm(), this.enviromentSize))
-   
+
         //paly sfx
         const sfx = new Audio("../../../res/music/gun.mp3")
         sfx.play()
@@ -242,7 +245,7 @@ class Player {
         setTimeout(() => {
             if (--this.cameraStack == 0)
                 this.cameraOffset = 0
-        },300)
+        }, 300)
     }
 
     //delta passed from mainloops update
@@ -309,6 +312,9 @@ class Player {
         // i prefer the short form :)
         const { floor, random } = Math
 
+        //add sound
+        voice.play()
+
         // pick a random greeting and a reaction
         const greeting = greetings[floor(random() * greetings.length)]
         const reaction = reactions[floor(random() * reactions.length)]
@@ -319,6 +325,10 @@ class Player {
         const leave = () => {
             hideTextbox()
             this.bindEvents()
+
+            //stop sounds
+            voice.pause()
+            
         }
 
         // gets buttons for the textbox
@@ -352,10 +362,10 @@ class Player {
             return;
         }
         //kill
-        if (this.toKill){
-            for (let i = 0;i < objects.length;i++){
-                if (!objects[i].isVampire && this.toKill){
-                    objects.splice(i,1)
+        if (this.toKill) {
+            for (let i = 0; i < objects.length; i++) {
+                if (!objects[i].isVampire && this.toKill) {
+                    objects.splice(i, 1)
                     this.toKill = false
                 }
             }
@@ -375,6 +385,14 @@ class Player {
                     //play sound
                     const sfx = new Audio("../../../res/music/human.wav")
                     sfx.play()
+
+                    //add effects
+                    this.cameraOffset = 10
+                    this.cameraStack++;
+                    setTimeout(() => {
+                        if (--this.cameraStack == 0)
+                            this.cameraOffset = 0
+                    }, 100)
                 }
             }
         }
