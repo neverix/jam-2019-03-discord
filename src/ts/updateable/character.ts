@@ -5,8 +5,10 @@ import { rectCollision } from "../collision"
 import { QuestionAnswer, questions, Question } from "../question"
 import { Buttons } from "../textbox"
 
+declare function require<T>(file: string): T
+
 const texture = new Image(100,100)
-texture.src = "../../../res/textures/character.png"
+texture.src = require("../../../res/textures/character.png")
 
 export default class Character {
     //texture

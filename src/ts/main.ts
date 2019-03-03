@@ -7,14 +7,15 @@ import { openFullscreen, closeFullscreen } from "./fullscreen";
 import { Key } from "ts-keycode-enum";
 import { audioFade } from "./audio-fade";
 
+declare function require<T>(file: string): T
 //keep trak of the size of the screen
 let fullScreen = false
 
-let voice = new Audio("../../res/music/voice.mp3")
+let voice = new Audio(require("../../res/music/voice.mp3"))
 voice.loop = true
 
 let menuMusic: HTMLAudioElement
-let introMusic = new Audio("../../res/music/intro.mp3")
+let introMusic = new Audio(require("../../res/music/intro.mp3"))
 introMusic.loop = true
 
 //the icons
@@ -123,7 +124,7 @@ sceneTransition("menu")
 fromEvent(document, "mousemove").pipe(
     take(1)
 ).subscribe((e) => {
-    const music = new Audio("../../res/music/main_menu.mp3")
+    const music = new Audio(require("../../res/music/main_menu.mp3"))
     music.loop = true
     music.play()
 

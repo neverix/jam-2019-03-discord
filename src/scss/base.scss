@@ -30,7 +30,7 @@ body,html {
 }
 
 #textbox-hide {
-    display: none
+    display: none;
 }
 
 .textbox-button,.textbox-button:visited {
@@ -147,7 +147,7 @@ canvas{
     color:getColor(full-screen);
     background-color: getColor(full-screen-background);
     z-index: 100000000000000;
-    border-top-left-radius: 25%
+    border-top-left-radius: 25%;
 }
 
 #night{

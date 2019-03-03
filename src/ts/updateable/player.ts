@@ -14,14 +14,14 @@ import { audioFade } from "../audio-fade";
 
 declare function require<T>(file: string): T
 
-let light: HTMLAudioElement | null = new Audio("../../../res/music/light.mp3")
-let dark: HTMLAudioElement | null = new Audio("../../../res/music/dark.mp3")
+let light: HTMLAudioElement | null = new Audio(require("../../../res/music/light.mp3"))
+let dark: HTMLAudioElement | null = new Audio(require("../../../res/music/dark.mp3"))
 light.volume = 0
 dark.volume = 0
 light.loop = true
 dark.loop = true
 
-let voice = new Audio("../../../res/music/voice.mp3")
+let voice = new Audio(require("../../../res/music/voice.mp3"))
 voice.loop = true
 
 // greetings the characters can say
@@ -48,10 +48,10 @@ class Player {
     paths: {
         [ley: string]: string
     } = {
-            front: "../../../res/textures/front.png",
-            left: "../../../res/textures/left.png",
-            right: "../../../res/textures/right.png",
-            back: "../../../res/textures/back.png"
+            front: require("../../../res/textures/front.png"),
+            left: require("../../../res/textures/left.png"),
+            right: require("../../../res/textures/right.png"),
+            back: require("../../../res/textures/back.png")
         }
 
     //actual images
@@ -237,7 +237,7 @@ class Player {
         this.bullets.push(new Bullet(this.position.add(this.size.div(2)), delta.norm(), this.enviromentSize))
 
         //paly sfx
-        const sfx = new Audio("../../../res/music/gun.mp3")
+        const sfx = new Audio(require("../../../res/music/gun.mp3"))
         sfx.play()
 
         //add effects
@@ -383,7 +383,7 @@ class Player {
                     else
                         this.killed.x++
                     //play sound
-                    const sfx = new Audio("../../../res/music/human.wav")
+                    const sfx = new Audio(require("../../../res/music/human.wav"))
                     sfx.play()
 
                     //add effects
@@ -414,7 +414,7 @@ class Player {
         }
 
         //audio
-        const end = new Audio("../../../res/music/final.mp3")
+        const end = new Audio(require("../../../res/music/final.mp3"))
         audioFade(end, 20, 2000, 0, 1).then(
             val => {
                 setTimeout(() => {
