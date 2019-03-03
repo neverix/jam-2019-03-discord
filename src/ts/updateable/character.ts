@@ -47,7 +47,7 @@ export default class Character {
 
         // generate answers to the questions
         const answers: QuestionAnswer[] = questions.map(question => {
-            const answerSet = this.isVampire ? question.vampireAnswers : question.humanAnswers
+            const answerSet = (this.isVampire && Math.floor(Math.random() * 3) == 1) ? question.vampireAnswers : question.humanAnswers
             const answer = answerSet[floor(random() * answerSet.length)]
             return {
                 question: question.name,

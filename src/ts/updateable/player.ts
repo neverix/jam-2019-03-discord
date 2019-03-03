@@ -47,10 +47,10 @@ class Player {
         back?: HTMLImageElement
         left?: HTMLImageElement
         right?: HTMLImageElement
-        [key:string]:HTMLImageElement
+        [key: string]: HTMLImageElement
     } = {
-        
-    }
+
+        }
     //keep track of direction
     direction = new Vector(0, 0)
 
@@ -83,7 +83,10 @@ class Player {
     dayLength = 30000
 
     //remember last texture
-    lastTexture:HTMLImageElement
+    lastTexture: HTMLImageElement
+
+    //x means normal and y vampire
+    killed = new Vector()
 
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
@@ -206,7 +209,7 @@ class Player {
 
         this.lastTexture = texture
 
-        ctx.drawImage(texture,this.position.x, this.position.y, this.size.x, this.size.y)
+        ctx.drawImage(texture, this.position.x, this.position.y, this.size.x, this.size.y)
 
         //draw bullets
         this.bullets.forEach(val => val.draw(ctx))
@@ -259,8 +262,27 @@ class Player {
                 getButtons())
         }
 
+        console.log(character.isVampire);
+
+
         // greet the detective
         typeText(fullGreeting, getButtons())
+    }
+
+    //check for damage
+    checkBulletCollisions(objects: Array<Character>) {
+        for (let i of objects) {
+            for (let j of this.bullets) {
+                if (i.position.add(i.size.div(2)).sub(j.position).len <= i.size.div(2).len + j.radius) {
+                    j.destroyed = true
+                    objects.splice(objects.indexOf(i), 1)
+                    if (i.isVampire)
+                        this.killed.y++
+                    else
+                        this.killed.x++
+                }
+            }
+        }
     }
 }
 

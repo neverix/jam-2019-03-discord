@@ -38,6 +38,8 @@ export function start(rootElement: HTMLElement = document.body) {
                 i.update(delta)
             }
         }
+        //check bullet collisions
+        player.checkBulletCollisions(characters.characters)
     }).setDraw(() => {
         // drawing
         // clear
