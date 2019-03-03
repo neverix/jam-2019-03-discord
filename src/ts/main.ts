@@ -97,7 +97,7 @@ const startGame = () => {
     sceneTransition("game")
     hideTextbox()
     voice.pause()
-    audioFade(introMusic,20,2000,1,0).then(
+    audioFade(introMusic, 20, 2000, 1, 0).then(
         val => introMusic.pause()
     )
 }
@@ -108,9 +108,9 @@ const continueConversation = () => {
             text: "OK",
             onClick: () => {
                 typeText(`We allow you to use your automatic gun to murder the vampires (hold the right click pressed).                           \n
-                    Just be careful and don't use it when the lights are on as to not atteact attention!`,[{
-                        text:"OK",
-                        onClick:startGame
+                    Just be careful and don't use it when the lights are on as to not atteact attention!`, [{
+                        text: "OK",
+                        onClick: startGame
                     }])
             }
         }])
@@ -130,6 +130,14 @@ fromEvent(document, "mousemove").pipe(
     menuMusic = music
 })
 
-fromEvent(document.getElementById("menu-button"),"click").subscribe(e => {
-    window.location.reload(false); 
+fromEvent(document.getElementById("menu-button"), "click").subscribe(e => {
+    window.location.reload(false);
+})
+
+fromEvent(document.getElementById("pewds"), "click").subscribe(e => {
+    window.location.replace("https://www.youtube.com/user/PewDiePie?view_as=subscriber&sub_confirmation=1");
+})
+
+fromEvent(document.getElementById("github"), "click").subscribe(e => {
+    window.location.replace("https://github.com/neverix/jam-2019-03-discord")
 })
