@@ -1,8 +1,9 @@
 import Vector from "../vector"
-import { getRandomName } from "../randomizer";
+import { getRandomName } from "../randomizer"
 import { Player } from "./player"
-import { rectCollision } from "../collision";
-import { QuestionAnswer, questions } from "../question";
+import { rectCollision } from "../collision"
+import { QuestionAnswer, questions, Question } from "../question"
+import { Buttons } from "../textbox"
 
 export default class Character {
     // position of the character
@@ -15,6 +16,8 @@ export default class Character {
     isVampire: boolean
     // answers to questions
     questionAnswers: { [question: string]: QuestionAnswer } = {}
+    // questions aready answered
+    answeredQuestions: Set<string> = new Set()
 
     constructor(worldSize: number, public size: Vector, private player: Player) {
         //i like to have the short form
@@ -70,5 +73,22 @@ export default class Character {
         ctx.font = "Impact"
         ctx.textAlign = "center"
         ctx.fillText(this.name, this.position.x + this.size.x / 2, this.position.y - this.size.y / 3, this.size.x)
+    }
+
+    // helper function, gets the buttons left given a leave function
+    getButtonsLeft(leave: () => void, onButtonClick: (question: Question) => void): Buttons {
+        return questions
+            // only pick questions that weren't answered
+            .filter(it => !this.answeredQuestions.has(it.name))
+            // buttonify them
+            .map(question => ({
+                text: question.question,
+                onClick: () => onButtonClick(question)
+            })).concat([
+                // add a "leave" button
+                {
+                    text: "Leave",
+                    onClick: () => leave()
+                }])
     }
 }

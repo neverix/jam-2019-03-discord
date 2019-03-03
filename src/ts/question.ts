@@ -1,6 +1,8 @@
 interface Question {
     name: string
     question: string
+    answerPrefix: string
+    answerPostfix: string
     humanAnswers: string[]
     vampireAnswers: string[]
 }
@@ -16,6 +18,8 @@ const questions: Question[] = [
     {
         name: "age",
         question: "How old are you?",
+        answerPrefix: "I'm ",
+        answerPostfix: " years old.",
         humanAnswers: [
             "10",
             "35",

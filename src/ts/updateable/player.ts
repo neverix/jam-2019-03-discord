@@ -2,6 +2,24 @@ import Vector from "../vector"
 import { fromEvent, Observable, Subscription } from "rxjs"
 import { Key } from "ts-keycode-enum"
 import Character from "./character"
+import { typeText, hideTextbox, Buttons } from "../textbox"
+import { questions, Question } from "../question";
+
+// greetings the characters can say
+const greetings = [
+    "Hello!",
+    "Howdy!",
+    "¡Hola!",
+    "G'day!",
+    "Good evening!"
+]
+
+// reactions of the characters (e.g. questions they ask after the greeting)
+const reactions = [
+    "What do you want from me?",
+    "Is that you, Detective? Wanna ask me something?",
+    "Why are you here?"
+]
 
 //main player class
 class Player {
@@ -18,12 +36,12 @@ class Player {
     constructor(public position: Vector = new Vector(0, 0),
         public size: Vector = new Vector(100, 100),
         public enviromentSize: number) {
-        
+
         this.bindEvents()
     }
 
     //call in constructor and after dialog
-    bindEvents(){
+    bindEvents() {
         //set up events
         const keydown = fromEvent(document, "keydown")
         const keydownSubscrption = keydown.subscribe((e: KeyboardEvent) => {
@@ -41,8 +59,8 @@ class Player {
         })
 
         //save events and subscriptions
-        this.events.push(keyup,keydown)
-        this.subscriptions.push(keydownSubscrption,keyupsubscription)
+        this.events.push(keyup, keydown)
+        this.subscriptions.push(keydownSubscrption, keyupsubscription)
     }
 
     //delta passed from mainloops update
@@ -77,6 +95,38 @@ class Player {
         this.position = this.position.add(collision)
 
         //TODO: display textbox and call bindEvents after finishing
+        // i prefer the short form :)
+        const { floor, random } = Math
+
+        // pick a random greeting and a reaction
+        const greeting = greetings[floor(random() * greetings.length)]
+        const reaction = reactions[floor(random() * reactions.length)]
+        // concatenate them to get a full greeting
+        const fullGreeting = `${greeting}\n${reaction}`
+
+        // the "leave" button
+        const leave = () => {
+            hideTextbox()
+            this.bindEvents()
+        }
+
+        // gets buttons for the textbox
+        const getButtons = () => character.getButtonsLeft(leave, onButtonClick)
+
+        // action on button click
+        const onButtonClick = (question: Question) => {
+            // add the question to the answered ones
+            character.answeredQuestions.add(question.name)
+            // get the question answer
+            const questionAnswer = character.questionAnswers[question.name]
+            // type the question answer
+            typeText(
+                question.answerPrefix + questionAnswer.answer + question.answerPostfix,
+                getButtons())
+        }
+
+        // greet the detective
+        typeText(fullGreeting, getButtons())
     }
 }
 

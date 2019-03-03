@@ -32,7 +32,7 @@ const okButton = { text: "OK", onClick: () => hideTextbox() }
 //start typing some text
 function typeText(
     text: string,
-    buttons: Buttons = [okButton]) {
+    buttons: Buttons = [okButton]): Promise<void> {
     // clear the text
     textboxText = ''
     // reset the current letter
@@ -44,39 +44,42 @@ function typeText(
     // remove the typer if it exists
     if (typerId)
         clearInterval(typerId)
+    return new Promise((resolve, reject) => {
+        //write the entrie string when you press Enter
+        const skipEvent = fromEvent(document, "keydown").pipe(
+            take(1)
+        ).subscribe((e: KeyboardEvent) => {
+            if (e.which == Key.Enter) {
+                //set up new events
+                const subscription = setupSkippingButtonPress(buttons)
 
-    //write the entrie string when you press Enter
-    const skipEvent = fromEvent(document, "keydown").pipe(
-        take(1)
-    ).subscribe((e: KeyboardEvent) => {
-        if (e.which == Key.Enter) {
-            //set up new events
-            const subscription = setupSkippingButtonPress(buttons)
-
-            //render the full text
-            renderText(text, buttons.map(
-                (val, index) => {
-                    //change the first element, such as it unsubscribes on click
-                    if (index == 0) {
-                        return {
-                            text: val.text,
-                            onClick: () => {
-                                subscription.unsubscribe()
-                                val.onClick()
+                //render the full text
+                renderText(text, buttons.map(
+                    (val, index) => {
+                        //change the first element, such as it unsubscribes on click
+                        if (index == 0) {
+                            return {
+                                text: val.text,
+                                onClick: () => {
+                                    subscription.unsubscribe()
+                                    val.onClick()
+                                }
                             }
                         }
+                        return val
                     }
-                    return val
-                }
-            ))
+                ))
 
-            //clear the interval
-            clearInterval(typerId)
-        }
+                //clear the interval
+                clearInterval(typerId)
+                // resolve the promise
+                resolve()
+            }
+        })
+
+        // create a new typer
+        typerId = setInterval(() => typer(buttons, skipEvent, resolve), typerDelay)
     })
-
-    // create a new typer
-    typerId = setInterval(() => typer(buttons, skipEvent), typerDelay)
 }
 
 //automatically run the first button
@@ -96,13 +99,15 @@ function setupSkippingButtonPress(buttons: Buttons): Subscription {
 }
 
 // the typer types text to the textbox
-function typer(buttons: Buttons, event: Subscription) {
+function typer(buttons: Buttons, event: Subscription, resolve: () => void) {
     // check if the entire text has been written
     if (currentLetter >= sourceText.length) {
         //clear old event
         event.unsubscribe()
         // stop the typer
         clearInterval(typerId)
+        // resolve the promise
+        resolve()
     } else {
         // copy the current letter from the source to the textbox
         let char = sourceText[currentLetter]
@@ -126,15 +131,15 @@ function renderText(textSoFar: string, buttons: Buttons) {
                 <br>
                 <!-- buttons -->
                 <!-- check if the text is completed -->
-                ${textSoFar.length < sourceText.length ? "" : buttons.map(button => html`
+                ${textSoFar.length < sourceText.length ? "" : buttons.map(button=> html`
                     <!-- create a button if it is -->
                     <a class=textbox-button href=# @click=${button.onClick}>
                         <!-- display the button text -->
                         ${button.text}
                     </a>`)
-            }
+                    }
             `
         , textboxDiv)
 }
 
-export { typeText, hideTextbox }
+export { typeText, hideTextbox, Buttons }
