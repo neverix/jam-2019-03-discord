@@ -1,8 +1,8 @@
 import { html, render } from "lit-html"
 import { unsafeHTML } from 'lit-html/directives/unsafe-html.js'
-import { fromEvent, Observable, Subscription } from "rxjs";
-import {take} from "rxjs/operators"
-import { Key } from "ts-keycode-enum";
+import { fromEvent, Observable, Subscription } from "rxjs"
+import { take } from "rxjs/operators"
+import { Key } from "ts-keycode-enum"
 
 // delay between typed characters
 const typerDelay = 50
@@ -44,7 +44,7 @@ function typeText(
     // remove the typer if it exists
     if (typerId)
         clearInterval(typerId)
-    
+
     //write the entrie string when you press Enter
     const skipEvent = fromEvent(document, "keydown").pipe(
         take(1)
@@ -55,11 +55,11 @@ function typeText(
 
             //render the full text
             renderText(text, buttons.map(
-                (val,index) => {
+                (val, index) => {
                     //change the first element, such as it unsubscribes on click
-                    if (index == 0){
+                    if (index == 0) {
                         return {
-                            text:val.text,
+                            text: val.text,
                             onClick: () => {
                                 subscription.unsubscribe()
                                 val.onClick()
@@ -82,13 +82,13 @@ function typeText(
 //automatically run the first button
 function setupSkippingButtonPress(buttons: Buttons): Subscription {
     const skipButtonPress = fromEvent(document, "keydown")
-    
+
     //save the subscription in a variable to unsubscribe later
     const subscription = skipButtonPress.pipe(
         take(1)
     ).subscribe((e: KeyboardEvent) => {
         //run the onclick of the frst button
-        if (e.which == Key.Enter) 
+        if (e.which == Key.Enter)
             buttons[0].onClick()
     })
 
@@ -125,13 +125,13 @@ function renderText(textSoFar: string, buttons: Buttons) {
                 </p>
                 <!-- buttons -->
                 <!-- check if the text is completed -->
-                ${textSoFar.length < sourceText.length ? "" : buttons.map(button => html`
+                ${textSoFar.length < sourceText.length ? "" : buttons.map(button=> html`
                     <!-- create a button if it is -->
                     <a class=textbox-button href=# @click=${button.onClick}>
                         <!-- display the button text -->
                         ${button.text}
                     </a>`)
-            }
+                    }
             `
         , textboxDiv)
 }

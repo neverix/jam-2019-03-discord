@@ -5,6 +5,6 @@ export function bg(size: number) {
             ctx.fillStyle = "white"
             ctx.fillRect(-size, -size, 2 * size, 2 * size)
         },
-        update:() => {}
+        update: () => { }
     }
 }

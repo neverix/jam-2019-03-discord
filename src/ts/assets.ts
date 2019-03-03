@@ -14,12 +14,12 @@ function loadAudio(path: string): HTMLAudioElement {
 function loadCanvas(rootElement: HTMLElement): HTMLCanvasElement {
     // create canvas if it doesn't exist
     if (document.getElementsByTagName("canvas").length == 0) {
-        const canvas = <HTMLCanvasElement> document.createElement("canvas")
+        const canvas = <HTMLCanvasElement>document.createElement("canvas")
         canvas.id = "canvas"
         rootElement.appendChild(canvas)
     }
     // get the canvas and set it up
-    const canvas = <HTMLCanvasElement> document.getElementById("canvas");
+    const canvas = <HTMLCanvasElement>document.getElementById("canvas")
     canvas.style.display = "block"
     // position and scale the canvas
     scaleCanvas(canvas)

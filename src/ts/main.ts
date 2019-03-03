@@ -1,11 +1,11 @@
 import { sceneTransition, addOnSceneTransition, getScene } from "./scenes"
 import { start } from "./game"
 import { typeText, hideTextbox } from "./textbox"
-import { fromEvent } from "rxjs";
-import { take } from "rxjs/operators";
+import { fromEvent } from "rxjs"
+import { take } from "rxjs/operators"
 
 //set up the first button
-fromEvent(document.getElementById("play"),"click").pipe(
+fromEvent(document.getElementById("play"), "click").pipe(
     take(1)
 ).subscribe((e) => sceneTransition("intro"))
 
@@ -18,7 +18,7 @@ addOnSceneTransition("game", () => {
 window.sceneTransition = sceneTransition
 
 addOnSceneTransition("intro", () => {
-    typeText(`Hsdfsdfffffffffffffsssssadoisnpaeprghaep9rg8dhap9sidgfapdhas'9[edgh[OEFHI[Peh'[aep9hf[s9dfhgp[i`, [
+    typeText(`yoyoyoyo gangsta`, [
         {
             text: "OK",
             onClick: () => {

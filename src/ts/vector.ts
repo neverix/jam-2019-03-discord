@@ -23,12 +23,12 @@ export default class Vector {
         return new Vector(this.x / other, this.y / other)
     }
 
-    get mirrot(){
-        return new Vector(-this.x,-this.y)
+    get mirror() {
+        return new Vector(-this.x, -this.y)
     }
 
     get len() {
-        return Math.sqrt(this.x**2 + this.y**2)
+        return Math.sqrt(this.x ** 2 + this.y ** 2)
     }
     // normalize
     norm() {
