@@ -5,9 +5,13 @@ import { fromEvent, interval } from "rxjs"
 import { take, throttle, withLatestFrom } from "rxjs/operators"
 import { openFullscreen, closeFullscreen } from "./fullscreen";
 import { Key } from "ts-keycode-enum";
+import { audioFade } from "./audio-fade";
 
 //keep trak of the size of the screen
 let fullScreen = false
+
+let menuMusic: HTMLAudioElement
+let introMusic = new Audio("../../res/music/intro.mp3")
 
 //the icons
 const fullScreenIcon = document.getElementById("fs-icon")
@@ -39,8 +43,8 @@ fromEvent(document.getElementById("full-screen-button"), "click").pipe(
 })
 
 //change icon if toggled with esc
-fromEvent(document,"fullscreenchange").subscribe(e => {
-    if (!document.fullscreen && fullScreen){
+fromEvent(document, "fullscreenchange").subscribe(e => {
+    if (!document.fullscreen && fullScreen) {
         fullScreen = false
         fullScreenIcon.style.display = "block"
         fullScreenCloseIcon.style.display = "none"
@@ -50,23 +54,58 @@ fromEvent(document,"fullscreenchange").subscribe(e => {
 //set up the first button
 fromEvent(document.getElementById("play"), "click").pipe(
     take(1)
-).subscribe((_e) => sceneTransition("intro"))
+).subscribe((_e) => {
+    sceneTransition("intro")
+    introMusic.play()
+    introMusic.volume = 0
+    audioFade(menuMusic, 30, 5000, 1, 0).then(
+        val => menuMusic.pause()
+    )
+    setTimeout(() => {
+        audioFade(introMusic, 100, 10000, 0, 0.1)
+    }, 2000)
+})
 
 addOnSceneTransition("game", () => {
     start(getScene("game"))
 })
 
 addOnSceneTransition("intro", () => {
-    typeText(`yoyoyoyo gangsta`, [
-        {
+    typeText(`Welcome Mr.Jhonson!                                                     \n
+            There is going to be a party at 6 o'clock`, [
+            {
+                text: "OK",
+                onClick: () => {
+                    typeText(`We were told that some vampires would be there                                   \n
+                             Your job is to spot and kill them!`, [{
+                            text: "OK",
+                            onClick: () => {
+                                continueConversation()
+                            }
+                        }])
+                }
+            }
+        ])
+})
+
+const startGame = () => {
+    sceneTransition("game")
+    hideTextbox()
+}
+
+const continueConversation = () => {
+    typeText(`There are some power issues in the area so the lights can sometimes go off...                           \n
+            It happens cyclically, the visibility may be limited at times`, [{
             text: "OK",
             onClick: () => {
-                sceneTransition("game")
-                hideTextbox()
+                typeText(`We allow you to use your automatic gun to murder the vampires (hold the right click pressed).                           \n
+                    Just be careful and don't use it when the lights are on as to not atteact attention!`,[{
+                        text:"OK",
+                        onClick:startGame
+                    }])
             }
-        }
-    ])
-})
+        }])
+}
 
 // go to menu in the beginning
 sceneTransition("menu")
@@ -78,4 +117,6 @@ fromEvent(document, "mousemove").pipe(
     const music = new Audio("../../res/music/main_menu.mp3")
     music.loop = true
     music.play()
+
+    menuMusic = music
 })

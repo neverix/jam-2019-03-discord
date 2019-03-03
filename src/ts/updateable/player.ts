@@ -1,5 +1,5 @@
 import Vector from "../vector"
-import { fromEvent, Observable, Subscription, interval } from "rxjs"
+import { fromEvent, Observable, Subscription, interval, from } from "rxjs"
 import { Key } from "ts-keycode-enum"
 import Character from "./character"
 import { throttle, timeout, take } from "rxjs/operators"
@@ -8,6 +8,8 @@ import { Bullet } from "./bullet"
 import { typeText, hideTextbox, Buttons } from "../textbox"
 import { questions, Question } from "../question"
 import fade from "../fading"
+import { html, render } from "lit-html";
+import { sceneTransition } from "../scenes";
 
 declare function require<T>(file: string): T
 
@@ -88,6 +90,10 @@ class Player {
     //x means normal and y vampire
     killed = new Vector()
 
+    //number of days
+    days = 0
+    maxNumberOfDays = 3
+
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
         public size: Vector = new Vector(100, 100),
@@ -106,11 +112,10 @@ class Player {
 
         //just for testing 
         fromEvent(document, "keydown").subscribe((e: KeyboardEvent) => {
-            if (e.which == Key.Q) {
+            if (e.which == Key.Q)
                 this.toggleTime()
-                console.log("event!!")
-
-            }
+            else if (e.which == Key.E)
+                this.gameOver()
         })
 
         //load paths
@@ -120,7 +125,29 @@ class Player {
         }
     }
 
+    removeEvents() {
+        //cancel all subscriptions
+        this.subscriptions.forEach((val) => val.unsubscribe())
+        this.subscriptions = []
+
+        //disable shooting
+        this.pressed = false
+
+        //reset direction
+        this.direction = new Vector()
+    }
+
     toggleTime() {
+        //increase reactions
+        this.days++
+
+        if (this.days >= this.maxNumberOfDays) {
+            this.gameOver()
+            this.removeEvents()
+            return false
+        }
+
+        //toggle time
         this.night = !this.night
 
         //change the display of the cover element
@@ -283,6 +310,24 @@ class Player {
                 }
             }
         }
+    }
+
+    gameOver() {
+        const template = (alive: number, killed: Vector) => html`
+            <div class="button">Survived: ${alive}</div>
+            <div class="button">Vampires killed: ${killed.y}</div>
+            <div class="button">Humans killed: ${killed.x}</div>
+        `
+        const parent = document.getElementById("stat-parent")
+        parent.style.display = "block"
+        parent.style.zIndex = `${10 ** 9}`
+
+        document.getElementById("game-over").style.display = "block"
+
+        sceneTransition("game-over")
+
+        render(template(2, this.killed), parent)
+        // fade(document.getElementById("game-over"), 2000, true, 20, 1, 0)
     }
 }
 

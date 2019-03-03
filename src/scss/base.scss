@@ -4,7 +4,7 @@
 
 $menu-width: 20%;
 $textbox-height: 40%;
-$game-over-width: 40%;
+$game-over-width: 60%;
 
 body,html {
     margin: 0;
@@ -108,10 +108,18 @@ canvas{
             justify-content: space-evenly;
             border-radius: 5%;
             .button-list{
-                padding:20%;
+                padding:10%;
+                width:100%;
                 @include centered;
                 *{
+                    display: block;
                     margin:10%;
+                }
+                #stat-parent{
+                    width: 100%;
+                    *{
+                        width:100%;
+                    }
                 }
             }
             #game-over-stats div:hover{
