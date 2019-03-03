@@ -328,7 +328,6 @@ class Player {
 
             //stop sounds
             voice.pause()
-            
         }
 
         // gets buttons for the textbox
@@ -399,6 +398,7 @@ class Player {
     }
 
     gameOver() {
+        hideTextbox()
         if (this.night) {
             audioFade(dark, 20, 2000, 1, 0).then(
                 val => dark.pause()

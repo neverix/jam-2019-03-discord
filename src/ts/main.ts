@@ -10,6 +10,9 @@ import { audioFade } from "./audio-fade";
 //keep trak of the size of the screen
 let fullScreen = false
 
+let voice = new Audio("../../res/music/voice.mp3")
+voice.loop = true
+
 let menuMusic: HTMLAudioElement
 let introMusic = new Audio("../../res/music/intro.mp3")
 introMusic.loop = true
@@ -57,6 +60,7 @@ fromEvent(document.getElementById("play"), "click").pipe(
     take(1)
 ).subscribe((_e) => {
     sceneTransition("intro")
+    voice.play()
     introMusic.play()
     introMusic.volume = 0
     audioFade(menuMusic, 30, 5000, 1, 0).then(
@@ -92,6 +96,7 @@ addOnSceneTransition("intro", () => {
 const startGame = () => {
     sceneTransition("game")
     hideTextbox()
+    voice.pause()
     audioFade(introMusic,20,2000,1,0).then(
         val => introMusic.pause()
     )
@@ -123,4 +128,8 @@ fromEvent(document, "mousemove").pipe(
     music.play()
 
     menuMusic = music
+})
+
+fromEvent(document.getElementById("menu-button"),"click").subscribe(e => {
+    window.location.reload(false); 
 })
