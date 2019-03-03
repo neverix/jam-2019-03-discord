@@ -21,9 +21,10 @@ body,html {
     height: $textbox-height;
     padding: 1%;
     background: getColor(textbox-bg);
-    p {
-        color: getColor(textbox-fg);
-    }
+}
+
+.textbox-text {
+    color: getColor(textbox-fg);
 }
 
 #textbox-hide {

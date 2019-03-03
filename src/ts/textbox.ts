@@ -120,9 +120,10 @@ function renderText(textSoFar: string, buttons: Buttons) {
 
         html`
                 <!-- the actual text -->
-                <p>
+                <div class=textbox-text>
                     ${unsafeHTML(textSoFar.split("\n").join("<br>"))}
-                </p>
+                </div>
+                <br>
                 <!-- buttons -->
                 <!-- check if the text is completed -->
                 ${textSoFar.length < sourceText.length ? "" : buttons.map(button=> html`
