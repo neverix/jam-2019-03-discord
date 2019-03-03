@@ -12,6 +12,7 @@ let fullScreen = false
 
 let menuMusic: HTMLAudioElement
 let introMusic = new Audio("../../res/music/intro.mp3")
+introMusic.loop = true
 
 //the icons
 const fullScreenIcon = document.getElementById("fs-icon")
@@ -62,7 +63,7 @@ fromEvent(document.getElementById("play"), "click").pipe(
         val => menuMusic.pause()
     )
     setTimeout(() => {
-        audioFade(introMusic, 100, 10000, 0, 0.1)
+        audioFade(introMusic, 100, 10000, 0, 1)
     }, 2000)
 })
 
@@ -91,6 +92,9 @@ addOnSceneTransition("intro", () => {
 const startGame = () => {
     sceneTransition("game")
     hideTextbox()
+    audioFade(introMusic,20,2000,1,0).then(
+        val => introMusic.pause()
+    )
 }
 
 const continueConversation = () => {

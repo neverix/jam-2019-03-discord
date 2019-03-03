@@ -10,8 +10,16 @@ import { questions, Question } from "../question"
 import fade from "../fading"
 import { html, render } from "lit-html";
 import { sceneTransition } from "../scenes";
+import { audioFade } from "../audio-fade";
 
 declare function require<T>(file: string): T
+
+let light:HTMLAudioElement|null = new Audio("../../../res/music/light.mp3")
+let dark:HTMLAudioElement|null = new Audio("../../../res/music/dark.mp3")
+light.volume = 0
+dark.volume = 0
+light.loop = true
+dark.loop = true
 
 // greetings the characters can say
 const greetings = [
@@ -94,6 +102,15 @@ class Player {
     days = 0
     maxNumberOfDays = 8
 
+    //audio
+    fadeTime = 1000
+
+    //only call gameOver once
+    forceEnded = false
+
+    //should a human die during the night?
+    toKill = false
+
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
         public size: Vector = new Vector(100, 100),
@@ -123,6 +140,9 @@ class Player {
             this.textures[i] = new Image(100, 100)
             this.textures[i].src = this.paths[i]
         }
+
+        //play music
+        audioFade(light, 3000, 30, 0, 1)
     }
 
     removeEvents() {
@@ -149,6 +169,17 @@ class Player {
 
         //toggle time
         this.night = !this.night
+
+        if (this.night) {
+            audioFade(dark, this.fadeTime, 30, 0, 1)
+            audioFade(light, this.fadeTime, 30, 1, 0)
+
+            this.toKill = true
+        }
+        else {
+            audioFade(dark, this.fadeTime, 30, 1, 0)
+            audioFade(light, this.fadeTime, 30, 0, 1)
+        }
 
         //change the display of the cover element
         if (this.night) this.coverElement.style.display = "block"
@@ -298,6 +329,24 @@ class Player {
 
     //check for damage
     checkBulletCollisions(objects: Array<Character>) {
+        //check for ending
+        if (objects.length == 0 && !this.forceEnded) {
+            this.forceEnded = true
+            this.gameOver()
+            return;
+        }
+        //kill
+        if (this.toKill){
+            for (let i = 0;i < objects.length;i++){
+                if (!objects[i].isVampire && this.toKill){
+                    objects.splice(i,1)
+                    this.toKill = false
+                }
+            }
+            this.toKill = false
+        }
+
+        //iterate trought all objects and bullets
         for (let i of objects) {
             for (let j of this.bullets) {
                 if (i.position.add(i.size.div(2)).sub(j.position).len <= i.size.div(2).len + j.radius) {
@@ -313,10 +362,43 @@ class Player {
     }
 
     gameOver() {
+        if (this.night) {
+            audioFade(dark, 20, 2000, 1, 0).then(
+                val => dark.pause()
+            )
+            light.pause()
+        }
+        else {
+            audioFade(light, 20, 2000, 1, 0).then(
+                val => light.pause()
+            )
+            dark.pause()
+        }
+
+        //audio
+        const end = new Audio("../../../res/music/final.mp3")
+        audioFade(end, 20, 2000, 0, 1).then(
+            val => {
+                setTimeout(() => {
+                    audioFade(end, 20, 2000, 1, 0).then(
+                        val => {
+                            dark.pause()
+                            const bgDark = new Audio(dark.src)
+                            bgDark.volume = 0.1
+                            bgDark.play()
+
+                            light = null
+                            dark = null
+                        }
+                    )
+                }, 2000)
+            }
+        )
+
         const template = (alive: number, killed: Vector) => html`
-            <div class="button">Survived: ${alive}</div>
             <div class="button">Vampires killed: ${killed.y}</div>
             <div class="button">Humans killed: ${killed.x}</div>
+            <div class="button">Accuracy: ${100 * killed.y / (killed.x + killed.y)}%</div>
         `
         const parent = document.getElementById("stat-parent")
         parent.style.display = "block"
