@@ -26,7 +26,7 @@ addOnSceneTransition("intro", () => {
 })
 
 // go to menu in the beginning
-// sceneTransition("menu")
+sceneTransition("menu")
 
 //play music
 fromEvent(document, "mousemove").pipe(

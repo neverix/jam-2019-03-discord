@@ -1,5 +1,7 @@
 import Vector from "../vector"
-import { getRandomName } from "../randomizer"
+import { getRandomName } from "../randomizer";
+import { Player } from "./player"
+import { rectCollision } from "../collision";
 
 export default class Character {
     // position of the character
@@ -9,7 +11,7 @@ export default class Character {
     //used to generate the name length
     randomFactor: number = 6
 
-    constructor(worldSize: number, private size: Vector) {
+    constructor(worldSize: number, public size: Vector, private player: Player) {
         //i like to have the short form
         const { floor, random } = Math
 
@@ -18,13 +20,20 @@ export default class Character {
             -worldSize + size.x + random() * (worldSize - size.x) * 2,
             -worldSize + size.y + random() * (worldSize - size.y) * 2)
 
-        this.name = getRandomName("euioa".split(''), "typsdfgklzcvbnm".split(''), 5 + floor(random() * this.randomFactor) - this.randomFactor / 2)
+        this.name = getRandomName(
+            "euioa".split(''),
+            "typsdfgklzcvbnm".split(''),
+            5 + floor(random() * this.randomFactor) - this.randomFactor / 2)
         console.log(this.name)
     }
 
     // update the character's state
     update(delta: number) {
-
+        // check for collision with a player
+        const collision = rectCollision(this.position, this.player.position, this.size, this.player.size)
+        if (collision) {
+            this.player.notifyCharacterCollision(this, collision)
+        }
     }
 
     // draw the character

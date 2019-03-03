@@ -38,4 +38,8 @@ export default class Vector {
         if (len == 0) return new Vector(0, 0)
         return this.div(this.len)
     }
+    // get the biggest side
+    maxSide() {
+        return Math.max(this.x, this.y)
+    }
 }
