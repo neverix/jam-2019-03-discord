@@ -59,6 +59,11 @@ export function start(rootElement: HTMLElement = document.body) {
             }
         }
 
+        camera.offset = 0
+        for (let i of [player]){
+            camera.offset += i.cameraOffset
+        }
+
         // restore position
         ctx.restore()
     }).start()

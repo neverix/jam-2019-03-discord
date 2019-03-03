@@ -92,6 +92,10 @@ class Player {
     lastTransition = performance.now()
     dayLength = 30000
 
+    //effects
+    cameraOffset = 0
+    cameraStack = 0
+
     //remember last texture
     lastTexture: HTMLImageElement
 
@@ -227,6 +231,18 @@ class Player {
     shoot(delta: Vector) {
         if (!this.night) return
         this.bullets.push(new Bullet(this.position.add(this.size.div(2)), delta.norm(), this.enviromentSize))
+   
+        //paly sfx
+        const sfx = new Audio("../../../res/music/gun.mp3")
+        sfx.play()
+
+        //add effects
+        this.cameraOffset = 10
+        this.cameraStack++;
+        setTimeout(() => {
+            if (--this.cameraStack == 0)
+                this.cameraOffset = 0
+        },300)
     }
 
     //delta passed from mainloops update
@@ -356,6 +372,9 @@ class Player {
                         this.killed.y++
                     else
                         this.killed.x++
+                    //play sound
+                    const sfx = new Audio("../../../res/music/human.wav")
+                    sfx.play()
                 }
             }
         }

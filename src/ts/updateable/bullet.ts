@@ -21,6 +21,12 @@ export class Bullet {
         else if (this.position.x + this.radius > this.enviromentSize) this.destroyed = true
         if (this.position.y < -this.enviromentSize) this.destroyed = true
         else if (this.position.y + this.radius > this.enviromentSize) this.destroyed = true
+
+        if (this.destroyed){
+            //play sfx
+            const sfx = new Audio("../../../res/music/wall.wav")
+            sfx.play()
+        }
     }
     draw(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = "black"
