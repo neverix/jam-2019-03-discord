@@ -19,7 +19,7 @@ export default class Character {
     // draw the character
     draw(ctx: CanvasRenderingContext2D) {
         // placeholder art
-        ctx.fillStyle = "blue"
+        ctx.fillStyle = "red"
         ctx.fillRect(this.position.x, this.position.y, this.size.x, this.size.y)
     }
 }

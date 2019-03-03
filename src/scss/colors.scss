@@ -1,11 +1,14 @@
+$accent-color: rgb(255, 80, 50);
+
 $colors: (
+    body-bg: black,
     menu-bg: rgb(10, 10, 10),
     buttons-border: rgb(220, 220, 220),
     textbox-bg:rgb(10, 10, 10),
     textbox-fg: rgb(220, 220, 220),
-    textbox-button-bg: orange,
+    textbox-button-bg: $accent-color,
     textbox-button-fg: white,
-    glow-1: orange,
+    glow-1: $accent-color,
     glow-2: white
 );
 
