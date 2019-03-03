@@ -34,7 +34,6 @@ class MapLoader {
     constructor(path: string, size: number) {
         //load the map
         this.map = require<any>("../maps/map1")
-        console.log(this.map, size);
 
         //the size of the world
         this.size = 2 * size

@@ -2,6 +2,7 @@ import Vector from "../vector"
 import { getRandomName } from "../randomizer";
 import { Player } from "./player"
 import { rectCollision } from "../collision";
+import { QuestionAnswer, questions } from "../question";
 
 export default class Character {
     // position of the character
@@ -10,6 +11,10 @@ export default class Character {
     name: string
     //used to generate the name length
     randomFactor: number = 6
+    // is this character a vampire?
+    isVampire: boolean
+    // answers to questions
+    questionAnswers: { [question: string]: QuestionAnswer } = {}
 
     constructor(worldSize: number, public size: Vector, private player: Player) {
         //i like to have the short form
@@ -20,11 +25,29 @@ export default class Character {
             -worldSize + size.x + random() * (worldSize - size.x) * 2,
             -worldSize + size.y + random() * (worldSize - size.y) * 2)
 
+        // generate name
         this.name = getRandomName(
             "euioa".split(''),
             "typsdfgklzcvbnm".split(''),
             5 + floor(random() * this.randomFactor) - this.randomFactor / 2)
-        console.log(this.name)
+
+        // generate "vampirity"
+        this.isVampire = random() < 0.5
+
+        // generate answers to the questions
+        const answers: QuestionAnswer[] = questions.map(question => {
+            const answerSet = this.isVampire ? question.vampireAnswers : question.humanAnswers
+            const answer = answerSet[floor(random() * answerSet.length)]
+            return {
+                question: question.name,
+                answer,
+                isVampireAnswer: this.isVampire
+            }
+        })
+        // assign the answers
+        for (let answer of answers) {
+            this.questionAnswers[answer.question] = answer
+        }
     }
 
     // update the character's state

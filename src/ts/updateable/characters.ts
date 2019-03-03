@@ -7,8 +7,7 @@ export default class Characters {
     characters: Character[] = []
 
     constructor(
-        worldSize: number, private player: Player,
-        characterNumber: number = 5, size: Vector = new Vector(30, 30)) {
+        worldSize: number, player: Player, characterNumber: number = 5, size: Vector = new Vector(30, 30)) {
         // generate characters
         for (let i = 0; i < characterNumber; i++) {
             this.characters.push(new Character(worldSize, size, player))
