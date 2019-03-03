@@ -134,13 +134,14 @@ class Player {
             )
         })
 
-        //just for testing 
         fromEvent(document, "keydown").subscribe((e: KeyboardEvent) => {
-            if (e.which == Key.Q)
-                this.toggleTime()
-            else if (e.which == Key.E)
+            // //just for testing 
+            // if (e.which == Key.Q)
+            //     this.toggleTime()
+            if (e.which == Key.F)
                 this.gameOver()
         })
+
 
         //load paths
         for (let i in this.paths) {

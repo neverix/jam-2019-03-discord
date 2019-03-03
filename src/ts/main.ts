@@ -141,3 +141,11 @@ fromEvent(document.getElementById("pewds"), "click").subscribe(e => {
 fromEvent(document.getElementById("github"), "click").subscribe(e => {
     window.location.replace("https://github.com/neverix/jam-2019-03-discord")
 })
+
+fromEvent(document.getElementById("end-pewds"), "click").subscribe(e => {
+    window.location.replace("https://www.youtube.com/user/PewDiePie?view_as=subscriber&sub_confirmation=1");
+})
+
+fromEvent(document.getElementById("end-github"), "click").subscribe(e => {
+    window.location.replace("https://github.com/neverix/jam-2019-03-discord")
+})
