@@ -26,10 +26,10 @@ addOnSceneTransition("intro", () => {
 })
 
 // go to menu in the beginning
-sceneTransition("menu")
+// sceneTransition("menu")
 
 //play music
-fromEvent(document,"mousemove").pipe(
+fromEvent(document, "mousemove").pipe(
     take(1)
 ).subscribe((e) => {
     const music = new Audio("../../res/music/main_menu.mp3")

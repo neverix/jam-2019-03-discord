@@ -1,5 +1,5 @@
 import Vector from "../vector"
-import { getRandomName } from "../randomizer";
+import { getRandomName } from "../randomizer"
 
 export default class Character {
     // position of the character
@@ -7,7 +7,7 @@ export default class Character {
     // name. you can modify the vowels and consonants to make it sound differently
     name: string
     //used to generate the name length
-    randomFactor:number = 6
+    randomFactor: number = 6
 
     constructor(worldSize: number, private size: Vector) {
         //i like to have the short form

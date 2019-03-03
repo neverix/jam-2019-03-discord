@@ -6,6 +6,7 @@ import { Player } from "./updateable/player"
 import { bg } from "./updateable/bg"
 import Characters from "./updateable/characters"
 import { zipAll } from "rxjs/operators";
+import { MapLoader } from "./updateable/map";
 
 // start the game
 export function start(rootElement: HTMLElement = document.body) {
@@ -22,8 +23,10 @@ export function start(rootElement: HTMLElement = document.body) {
     // characters
     const characters = new Characters(worldSize, 15)
 
+    const test = new MapLoader("/maps/map1.js", worldSize)
+
     //to update
-    const updateable = [camera, bg(worldSize), player, characters]
+    const updateable = [camera, bg(worldSize), test, player, characters]
 
     // set up game state update and drawing
     mainloop.setUpdate((delta: number) => {
