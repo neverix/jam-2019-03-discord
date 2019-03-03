@@ -5,6 +5,7 @@ import Camera from "./updateable/camera"
 import { Player } from "./updateable/player"
 import { bg } from "./updateable/bg"
 import Characters from "./updateable/characters"
+import { zipAll } from "rxjs/operators";
 
 // start the game
 export function start(rootElement: HTMLElement = document.body) {

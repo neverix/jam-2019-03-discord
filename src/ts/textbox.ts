@@ -126,13 +126,13 @@ function renderText(textSoFar: string, buttons: Buttons) {
                 <br>
                 <!-- buttons -->
                 <!-- check if the text is completed -->
-                ${textSoFar.length < sourceText.length ? "" : buttons.map(button=> html`
+                ${textSoFar.length < sourceText.length ? "" : buttons.map(button => html`
                     <!-- create a button if it is -->
                     <a class=textbox-button href=# @click=${button.onClick}>
                         <!-- display the button text -->
                         ${button.text}
                     </a>`)
-                    }
+            }
             `
         , textboxDiv)
 }
