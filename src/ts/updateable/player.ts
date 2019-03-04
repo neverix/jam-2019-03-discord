@@ -93,7 +93,8 @@ class Player {
 
     //time stamps
     lastTransition = performance.now()
-    dayLength = 15000
+    dayLength = 20000
+    nightLength = 5000
 
     //effects
     cameraOffset = 0
@@ -252,7 +253,8 @@ class Player {
     //delta passed from mainloops update
     update(delta: number) {
         //decide what part of the day it is
-        if (this.subscriptions.length > 0 && performance.now() - this.lastTransition >= this.dayLength) {
+        if (this.subscriptions.length > 0 && performance.now() - this.lastTransition >= (
+            this.night ? this.nightLength : this.dayLength)) {
             this.lastTransition = performance.now()
             this.toggleTime()
         }

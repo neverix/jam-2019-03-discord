@@ -135,6 +135,10 @@ fromEvent(document.getElementById("menu-button"), "click").subscribe(e => {
     window.location.reload(false);
 })
 
+fromEvent(document.getElementById("restart-button"), "click").subscribe(e => {
+    startGame()
+})
+
 fromEvent(document.getElementById("pewds"), "click").subscribe(e => {
     window.location.replace("https://www.youtube.com/user/PewDiePie?view_as=subscriber&sub_confirmation=1");
 })
