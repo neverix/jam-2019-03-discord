@@ -157,3 +157,17 @@ canvas{
     opacity: 0;
     display: none;  
 }
+
+#intro {
+    background: rgb(55,55,55);
+    z-index: -10
+}
+
+#guy-image {
+    z-index: -1000;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 30%;
+    height: auto;
+}

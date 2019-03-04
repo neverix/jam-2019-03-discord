@@ -77,12 +77,12 @@ addOnSceneTransition("game", () => {
 })
 
 addOnSceneTransition("intro", () => {
-    typeText(`Welcome Mr.Jhonson!                                                     \n
+    typeText(`Welcome Mr.Jhonson!
             There is going to be a party at 6 o'clock`, [
             {
                 text: "OK",
                 onClick: () => {
-                    typeText(`We were told that some vampires would be there                                   \n
+                    typeText(`We were told that some vampires would be there.
                              Your job is to spot and kill them!`, [{
                             text: "OK",
                             onClick: () => {
@@ -104,11 +104,11 @@ const startGame = () => {
 }
 
 const continueConversation = () => {
-    typeText(`There are some power issues in the area so the lights can sometimes go off...                           \n
+    typeText(`There are some power issues in the area so the lights can sometimes go off...
             It happens cyclically, the visibility may be limited at times`, [{
             text: "OK",
             onClick: () => {
-                typeText(`We allow you to use your automatic gun to murder the vampires (hold the right click pressed).                           \n
+                typeText(`We allow you to use your automatic gun to murder the vampires (hold the right click pressed).
                     Just be careful and don't use it when the lights are on as to not atteact attention!`, [{
                         text: "OK",
                         onClick: startGame

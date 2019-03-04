@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div id=textbox-div style="display:none"></div>
+    <div id=textbox-div style="display:none;z-index:1000000000;"></div>
     <div class=scene id="menu" style="opacity:0">
         <!--
             I need this container to be able to use display:flex, 
@@ -25,7 +25,9 @@
             </div>
         </div>
     </div>
-    <div class=scene id=intro></div>
+    <div class=scene id=intro>
+        <img src="../res/sprites/guy/guy.png" id=guy-image ondragstart="return false">
+    </div>
     <div class=scene id=game></div>
     <div class="scene" id="game-over">
         <!--i need to make a container to be able to use display:flex-->

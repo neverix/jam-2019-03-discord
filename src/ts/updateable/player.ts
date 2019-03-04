@@ -93,7 +93,7 @@ class Player {
 
     //time stamps
     lastTransition = performance.now()
-    dayLength = 30000
+    dayLength = 15000
 
     //effects
     cameraOffset = 0
@@ -276,8 +276,7 @@ class Player {
     }
     //draws
     draw(ctx: CanvasRenderingContext2D) {
-        //placeholder for art
-        //also , do u know any way to make spread operator (...) work in ts?
+        // art
         let texture = this.lastTexture;
         if (this.direction.y == 1) texture = this.textures.front
         else if (this.direction.y == -1) texture = this.textures.back
