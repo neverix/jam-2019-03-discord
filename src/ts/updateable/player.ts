@@ -11,6 +11,7 @@ import fade from "../fading"
 import { html, render } from "lit-html";
 import { sceneTransition } from "../scenes";
 import { audioFade } from "../audio-fade";
+import Characters from "./characters";
 
 declare function require<T>(file: string): T
 
@@ -118,6 +119,9 @@ class Player {
 
     //should a human die during the night?
     toKill = false
+
+    // all characters
+    characters: Characters
 
     //takes position ans size as arguments
     constructor(public position: Vector = new Vector(0, 0),
@@ -252,6 +256,10 @@ class Player {
 
     //delta passed from mainloops update
     update(delta: number) {
+        // check if all vampires have been killed
+        if (this.characters.characters.filter(it => it.isVampire).length == 0) {
+            this.gameOver()
+        }
         //decide what part of the day it is
         if (this.subscriptions.length > 0 && performance.now() - this.lastTransition >= (
             this.night ? this.nightLength : this.dayLength)) {
@@ -437,6 +445,9 @@ class Player {
         const template = (alive: number, killed: Vector) => html`
             <div class="button">Vampires killed: ${killed.y}</div>
             <div class="button">Humans killed: ${killed.x}</div>
+            <div class="button">Humans survived: ${
+                this.characters.characters.filter(it => !it.isVampire).length
+                }</div>
             <div class="button">Accuracy: ${100 * killed.y / (killed.x + killed.y)}%</div>
         `
         const parent = document.getElementById("stat-parent")

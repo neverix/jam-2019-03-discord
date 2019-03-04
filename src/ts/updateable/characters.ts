@@ -12,6 +12,8 @@ export default class Characters {
         for (let i = 0; i < characterNumber; i++) {
             this.characters.push(new Character(worldSize, size, player))
         }
+        // give the player access them
+        player.characters = this
     }
 
     // update all characters
